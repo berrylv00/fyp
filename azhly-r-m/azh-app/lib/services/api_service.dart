@@ -3,12 +3,16 @@ import 'package:http/http.dart' as http;
 import '../models/room.dart' show Room;
 
 class ApiService {
+  
+ 
   // ==============================
   // BASE URL
   // ==============================
 
-  // Chrome
-  static const String baseUrl = "http://127.0.0.1:8081/api";
+  // web
+
+   static const String baseUrl = "https://expert-engine-vpp95qjgj45xcp77-8082.app.github.dev/";
+  
 
   // Android Emulator
   // static const String baseUrl = "http://10.0.2.2:8080/api";
