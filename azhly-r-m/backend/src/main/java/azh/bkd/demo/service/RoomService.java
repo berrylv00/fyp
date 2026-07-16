@@ -46,4 +46,27 @@ public class RoomService {
     public void deleteRoom(Long id) {
         roomRepository.deleteById(id);
     }
+
+
+// ===========================
+// Smart Engine
+// Find First Available Room
+// ===========================
+
+public Room findAlternateRoom() {
+
+    List<Room> rooms =
+            roomRepository.findByAvailableTrueAndActiveTrue();
+
+    if (rooms.isEmpty()) {
+
+        return null;
+
+    }
+
+    return rooms.get(0);
+
 }
+
+}
+
