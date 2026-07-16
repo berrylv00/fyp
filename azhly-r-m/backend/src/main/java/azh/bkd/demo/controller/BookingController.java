@@ -133,7 +133,52 @@ public ResponseEntity<RoomBooking> requestBooking(
         return bookingService.getStudentBookings(name);
 
     }
+// =====================================
+// Admin Review Booking
+// =====================================
 
+@PostMapping("/review/{id}")
+public ResponseEntity<RoomBooking> reviewBooking(
+
+        @PathVariable Long id,
+
+        @RequestParam String action,
+
+        @RequestParam(required = false, defaultValue = "") String message) {
+
+    RoomBooking booking = bookingService
+            .getBookingById(id)
+            .orElse(null);
+
+    if (booking == null) {
+
+        return ResponseEntity.notFound().build();
+
+    }
+
+    if (action.equalsIgnoreCase("APPROVE")) {
+
+        bookingService.approve(
+                booking,
+                message.isBlank()
+                        ? "Approved by Admin."
+                        : message);
+
+    }
+
+    else if (action.equalsIgnoreCase("REJECT")) {
+
+        bookingService.reject(
+                booking,
+                message.isBlank()
+                        ? "Rejected by Admin."
+                        : message);
+
+    }
+
+    return ResponseEntity.ok(booking);
+
+}
     // =====================================
     // Delete Booking
     // =====================================
