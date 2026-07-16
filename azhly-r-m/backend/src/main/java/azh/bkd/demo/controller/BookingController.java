@@ -1,5 +1,6 @@
 package azh.bkd.demo.controller;
-
+import azh.bkd.demo.model.Room;
+import azh.bkd.demo.service.RoomService;
 import azh.bkd.demo.model.RoomBooking;
 import azh.bkd.demo.service.RoomBookingService;
 
