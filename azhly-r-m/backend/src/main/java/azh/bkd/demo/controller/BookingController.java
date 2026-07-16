@@ -33,7 +33,7 @@ public ResponseEntity<RoomBooking> requestBooking(
         @RequestBody RoomBooking booking) {
 
     // Request Received
-    booking.setStatus("PROCESSING");
+    booking.setStatus("PENDING");
     booking.setSmartEngineStage("Reading Timetable...");
     booking.setAdminMessage("Smart Engine is processing your request...");
 
