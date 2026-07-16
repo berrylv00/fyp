@@ -126,15 +126,8 @@ public ResponseEntity<RoomBooking> requestBooking(
     // Student booking history
     // =====================================
 
-    @GetMapping("/student/{name}")
-    public List<RoomBooking> getStudentBookings(
-            @PathVariable String name) {
-
-        return bookingService.getStudentBookings(name);
-
-    }
 // =====================================
-// Admin Review Booking
+// Admin Review / Override
 // =====================================
 
 @PostMapping("/review/{id}")
@@ -144,7 +137,9 @@ public ResponseEntity<RoomBooking> reviewBooking(
 
         @RequestParam String action,
 
-        @RequestParam(required = false, defaultValue = "") String message) {
+        @RequestParam(required = false, defaultValue = "") String message,
+
+        @RequestParam(required = false, defaultValue = "") String alternateRoom) {
 
     RoomBooking booking = bookingService
             .getBookingById(id)
@@ -156,23 +151,42 @@ public ResponseEntity<RoomBooking> reviewBooking(
 
     }
 
-    if (action.equalsIgnoreCase("APPROVE")) {
+    switch (action.toUpperCase()) {
 
-        bookingService.approve(
-                booking,
-                message.isBlank()
-                        ? "Approved by Admin."
-                        : message);
+        case "APPROVE_ORIGINAL":
 
-    }
+            bookingService.approveOriginal(
+                    booking,
+                    message.isBlank()
+                            ? "Original room approved by Admin."
+                            : message);
 
-    else if (action.equalsIgnoreCase("REJECT")) {
+            break;
 
-        bookingService.reject(
-                booking,
-                message.isBlank()
-                        ? "Rejected by Admin."
-                        : message);
+        case "APPROVE_ALTERNATE":
+
+            bookingService.approveAlternate(
+                    booking,
+                    alternateRoom,
+                    message.isBlank()
+                            ? "Alternate room approved by Admin."
+                            : message);
+
+            break;
+
+        case "REJECT":
+
+            bookingService.overrideReject(
+                    booking,
+                    message.isBlank()
+                            ? "Rejected by Admin."
+                            : message);
+
+            break;
+
+        default:
+
+            return ResponseEntity.badRequest().build();
 
     }
 
