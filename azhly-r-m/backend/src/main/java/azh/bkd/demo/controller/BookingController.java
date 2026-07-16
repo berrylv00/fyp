@@ -74,7 +74,7 @@ public ResponseEntity<RoomBooking> requestBooking(
                     alternate.getRoomNo());
 
             savedBooking.setAdminMessage(
-                    "Conflict detected. Waiting for teacher response.");
+                    "Conflict detected. Alternate room available.");
 
         } else {
 
@@ -86,7 +86,7 @@ public ResponseEntity<RoomBooking> requestBooking(
 
         }
 
-        bookingService.saveBooking(savedBooking);
+        
 
         return ResponseEntity.ok(savedBooking);
 
