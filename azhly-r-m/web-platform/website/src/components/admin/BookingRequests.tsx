@@ -5,14 +5,51 @@ import {getAllBookings, approveBooking, rejectBooking } from "@/services/booking
 import { toast } from 'sonner';
 
 const statusBadge = (status: string) => {
-  const map: Record<string, { bg: string; color: string; label: string }> = {
-    pending: { bg: '#fef3c7', color: '#d97706', label: 'Pending' },
-    approved: { bg: '#dcfce7', color: '#16a34a', label: 'Approved' },
-    rejected: { bg: '#fee2e2', color: '#dc2626', label: 'Rejected' },
-    rescheduled: { bg: '#ede9fe', color: '#7c3aed', label: 'Rescheduled' },
+
+  const map: Record<string, any> = {
+
+    processing: {
+      bg:"#dbeafe",
+      color:"#2563eb",
+      label:"Processing"
+    },
+
+    waiting_user:{
+      bg:"#fef3c7",
+      color:"#d97706",
+      label:"Waiting User"
+    },
+
+    approved:{
+      bg:"#dcfce7",
+      color:"#16a34a",
+      label:"Approved"
+    },
+
+    rejected:{
+      bg:"#fee2e2",
+      color:"#dc2626",
+      label:"Rejected"
+    }
+
   };
-  const s = map[status] || map.pending;
-  return <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: s.bg, color: s.color }}>{s.label}</span>;
+
+  const s = map[status.toLowerCase()] || map.processing;
+
+  return(
+
+    <span
+      className="px-3 py-1 rounded-full text-xs font-semibold"
+      style={{
+        background:s.bg,
+        color:s.color
+      }}
+    >
+      {s.label}
+    </span>
+
+  );
+
 };
 
 const BookingRequests = () => {
