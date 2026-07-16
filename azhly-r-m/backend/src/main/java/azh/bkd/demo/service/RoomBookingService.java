@@ -91,4 +91,53 @@ public class RoomBookingService {
 
         bookingRepository.save(booking);
     }
+// ======================================
+// ADMIN OVERRIDE METHODS
+// ======================================
+
+public void approveOriginal(RoomBooking booking,
+                            String message) {
+
+    booking.setStatus("APPROVED");
+
+    booking.setApprovedRoom(booking.getRoomNo());
+
+    booking.setAdminMessage(message);
+
+    booking.setSmartEngineStage("Admin Override");
+
+    bookingRepository.save(booking);
+}
+
+public void approveAlternate(RoomBooking booking,
+                             String alternateRoom,
+                             String message) {
+
+    booking.setStatus("APPROVED");
+
+    booking.setRoomNo(alternateRoom);
+
+    booking.setApprovedRoom(alternateRoom);
+
+    booking.setAlternateRoom(alternateRoom);
+
+    booking.setAdminMessage(message);
+
+    booking.setSmartEngineStage("Admin Override");
+
+    bookingRepository.save(booking);
+}
+
+public void overrideReject(RoomBooking booking,
+                           String reason) {
+
+    booking.setStatus("REJECTED");
+
+    booking.setAdminMessage(reason);
+
+    booking.setSmartEngineStage("Admin Override");
+
+    bookingRepository.save(booking);
+}
+
 }
