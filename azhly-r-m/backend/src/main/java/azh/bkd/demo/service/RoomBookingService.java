@@ -1,152 +1,94 @@
-package azh.bkd.demo.model;
-import azh.bkd.demo.model.RoomBooking;
+package azh.bkd.demo.service;
 
+import azh.bkd.demo.model.RoomBooking;
 import azh.bkd.demo.repository.RoomBookingRepository;
+
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-@Entity
-@Table(name = "room_bookings")
-public class RoomBooking {
+@Service
+public class RoomBookingService {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final RoomBookingRepository bookingRepository;
 
-    private String studentName;
-
-    private String roomNo;
-
-    private String day;
-
-    private String timeSlot;
-
-    private String purpose;
-
-    private String status;
-
-    private String adminMessage;
-
-    // ===========================
-    // SMART ENGINE FIELDS
-    // ===========================
-
-    private String smartEngineStage;
-
-    private String approvedRoom;
-
-    private String alternateRoom;
-
-    private String conflictWith;
-
-    private String userDecision;
-
-    // ===========================
-    // Getters & Setters
-    // ===========================
-
-    public Long getId() {
-        return id;
+    public RoomBookingService(RoomBookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    // Save Booking
+    public RoomBooking saveBooking(RoomBooking booking) {
+        return bookingRepository.save(booking);
     }
 
-    public String getStudentName() {
-        return studentName;
+    // Get All Bookings
+    public List<RoomBooking> getAllBookings() {
+        return bookingRepository.findAll();
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    // Get Booking By ID
+    public Optional<RoomBooking> getBookingById(Long id) {
+        return bookingRepository.findById(id);
     }
 
-    public String getRoomNo() {
-        return roomNo;
+    // Student Booking History
+    public List<RoomBooking> getStudentBookings(String studentName) {
+        return bookingRepository.findByStudentName(studentName);
     }
 
-    public void setRoomNo(String roomNo) {
-        this.roomNo = roomNo;
+    // Delete Booking
+    public void deleteBooking(Long id) {
+        bookingRepository.deleteById(id);
     }
 
-    public String getDay() {
-        return day;
+    // Conflict Detection
+    public List<RoomBooking> checkConflicts(
+            String roomNo,
+            String day,
+            String timeSlot) {
+
+        return bookingRepository.findByRoomNoAndDayAndTimeSlotAndStatus(
+                roomNo,
+                day,
+                timeSlot,
+                "APPROVED");
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    // Smart Engine Methods
+
+    public void updateStage(RoomBooking booking, String stage) {
+        booking.setSmartEngineStage(stage);
+        bookingRepository.save(booking);
     }
 
-    public String getTimeSlot() {
-        return timeSlot;
+    public void approve(RoomBooking booking, String message) {
+
+        booking.setStatus("APPROVED");
+        booking.setAdminMessage(message);
+        booking.setSmartEngineStage("Completed");
+        booking.setApprovedRoom(booking.getRoomNo());
+
+        bookingRepository.save(booking);
     }
 
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
+    public void reject(RoomBooking booking, String reason) {
+
+        booking.setStatus("REJECTED");
+        booking.setAdminMessage(reason);
+        booking.setSmartEngineStage("Completed");
+
+        bookingRepository.save(booking);
     }
 
-    public String getPurpose() {
-        return purpose;
-    }
+    public void waitingForUser(RoomBooking booking,
+                               String alternateRoom) {
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
+        booking.setStatus("WAITING_USER");
+        booking.setAlternateRoom(alternateRoom);
+        booking.setUserDecision("WAITING");
+        booking.setSmartEngineStage("Waiting for User Decision");
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getAdminMessage() {
-        return adminMessage;
-    }
-
-    public void setAdminMessage(String adminMessage) {
-        this.adminMessage = adminMessage;
-    }
-
-    public String getSmartEngineStage() {
-        return smartEngineStage;
-    }
-
-    public void setSmartEngineStage(String smartEngineStage) {
-        this.smartEngineStage = smartEngineStage;
-    }
-
-    public String getApprovedRoom() {
-        return approvedRoom;
-    }
-
-    public void setApprovedRoom(String approvedRoom) {
-        this.approvedRoom = approvedRoom;
-    }
-
-    public String getAlternateRoom() {
-        return alternateRoom;
-    }
-
-    public void setAlternateRoom(String alternateRoom) {
-        this.alternateRoom = alternateRoom;
-    }
-
-    public String getConflictWith() {
-        return conflictWith;
-    }
-
-    public void setConflictWith(String conflictWith) {
-        this.conflictWith = conflictWith;
-    }
-
-    public String getUserDecision() {
-        return userDecision;
-    }
-
-    public void setUserDecision(String userDecision) {
-        this.userDecision = userDecision;
+        bookingRepository.save(booking);
     }
 }
