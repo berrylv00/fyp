@@ -5,36 +5,156 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "room_bookings")
 public class RoomBooking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String studentName;
-    private String roomNo;      // e.g., "Lab-3"
-    private String day;         // e.g., "MON"
-    private String timeSlot;    // e.g., "07:00 - 08:30"
-    private String status;      // "PENDING", "APPROVED", "REJECTED"
-    private String adminMessage; // Message back to student
+
+    private String roomNo;
+
+    private String day;
+
+    private String timeSlot;
+
+    private String purpose;
+
+    // -------------------------
+    // Smart Engine Fields
+    // -------------------------
+
+    // PENDING, APPROVED, REJECTED,
+    // CONFLICT, WAITING_USER, ALTERNATE_ASSIGNED
+    private String status;
+
+    // Message shown to user/admin
+    private String adminMessage;
+
+    // Reading Timetable...
+    // Checking Availability...
+    // Detecting Conflict...
+    // Finding Alternate Room...
+    // Completed
+    private String smartEngineStage;
+
+    // Name of conflicting booking/person
+    private String conflictWith;
+
+    // Alternate room suggested
+    private String alternateRoom;
+
+    // YES / NO / WAITING
+    private String userDecision;
+
+    // Final approved room
+    private String approvedRoom;
+
+    // ===========================
+    // Getters & Setters
+    // ===========================
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getRoomNo() {
+        return roomNo;
+    }
+
+    public void setRoomNo(String roomNo) {
+        this.roomNo = roomNo;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getTimeSlot() {
+        return timeSlot;
+    }
+
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
+    }
+
     public String getPurpose() {
         return purpose;
     }
+
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
-    private String purpose;
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getStudentName() { return studentName; }
-    public void setStudentName(String studentName) { this.studentName = studentName; }
-    public String getRoomNo() { return roomNo; }
-    public void setRoomNo(String roomNo) { this.roomNo = roomNo; }
-    public String getDay() { return day; }
-    public void setDay(String day) { this.day = day; }
-    public String getTimeSlot() { return timeSlot; }
-    public void setTimeSlot(String timeSlot) { this.timeSlot = timeSlot; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public String getAdminMessage() { return adminMessage; }
-    public void setAdminMessage(String adminMessage) { this.adminMessage = adminMessage; }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getAdminMessage() {
+        return adminMessage;
+    }
+
+    public void setAdminMessage(String adminMessage) {
+        this.adminMessage = adminMessage;
+    }
+
+    public String getSmartEngineStage() {
+        return smartEngineStage;
+    }
+
+    public void setSmartEngineStage(String smartEngineStage) {
+        this.smartEngineStage = smartEngineStage;
+    }
+
+    public String getConflictWith() {
+        return conflictWith;
+    }
+
+    public void setConflictWith(String conflictWith) {
+        this.conflictWith = conflictWith;
+    }
+
+    public String getAlternateRoom() {
+        return alternateRoom;
+    }
+
+    public void setAlternateRoom(String alternateRoom) {
+        this.alternateRoom = alternateRoom;
+    }
+
+    public String getUserDecision() {
+        return userDecision;
+    }
+
+    public void setUserDecision(String userDecision) {
+        this.userDecision = userDecision;
+    }
+
+    public String getApprovedRoom() {
+        return approvedRoom;
+    }
+
+    public void setApprovedRoom(String approvedRoom) {
+        this.approvedRoom = approvedRoom;
+    }
 }
