@@ -124,12 +124,19 @@ useEffect(() => {
 
 }
 
-  const counts = {
-    all: requests.length,
-    pending: requests.filter(r => r.status.toLowerCase() === 'pending').length,
-    approved: requests.filter(r => r.status.toLowerCase() === 'approved').length,
-    rejected: requests.filter(r => r.status.toLowerCase() === 'rejected').length,
-  };
+  const counts={
+
+all:requests.length,
+
+processing:requests.filter(r=>r.status==="PROCESSING").length,
+
+waiting:requests.filter(r=>r.status==="WAITING_USER").length,
+
+approved:requests.filter(r=>r.status==="APPROVED").length,
+
+rejected:requests.filter(r=>r.status==="REJECTED").length
+
+}
 
   return (
     <div className="space-y-5">
