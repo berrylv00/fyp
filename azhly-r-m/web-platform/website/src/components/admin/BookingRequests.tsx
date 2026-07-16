@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Check, X, RefreshCw, Filter, Search } from 'lucide-react';
+import {Search, Filter, Cpu, ShieldAlert, CheckCircle2, XCircle, Clock3, Zap } from "lucide-react";
 import {getAllBookings, approveBooking, rejectBooking } from "@/services/bookingService";
 
 import { toast } from 'sonner';
