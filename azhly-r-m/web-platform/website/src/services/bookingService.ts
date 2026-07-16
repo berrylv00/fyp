@@ -18,7 +18,9 @@ export const approveBooking = async (
   message: string = ""
 ) => {
   const response = await api.post(
-    `/bookings/review/${id}?action=APPROVE&message=${encodeURIComponent(message)}`
+    `/bookings/review/${id}?action=APPROVE&message=${encodeURIComponent(
+      message
+    )}`
   );
 
   return response.data;
@@ -33,7 +35,9 @@ export const rejectBooking = async (
   message: string = ""
 ) => {
   const response = await api.post(
-    `/bookings/review/${id}?action=REJECT&message=${encodeURIComponent(message)}`
+    `/bookings/review/${id}?action=REJECT&message=${encodeURIComponent(
+      message
+    )}`
   );
 
   return response.data;
@@ -45,5 +49,40 @@ export const rejectBooking = async (
 
 export const deleteBooking = async (id: number) => {
   const response = await api.delete(`/bookings/${id}`);
+  return response.data;
+};
+
+// =====================================================
+// SMART ENGINE
+// ADMIN OVERRIDE APIs
+// =====================================================
+
+// Approve Original Room
+
+export const overrideOriginal = async (id: number) => {
+  const response = await api.post(
+    `/bookings/override/original/${id}`
+  );
+
+  return response.data;
+};
+
+// Approve Suggested Room
+
+export const overrideAlternate = async (id: number) => {
+  const response = await api.post(
+    `/bookings/override/alternate/${id}`
+  );
+
+  return response.data;
+};
+
+// Reject Request
+
+export const overrideReject = async (id: number) => {
+  const response = await api.post(
+    `/bookings/override/reject/${id}`
+  );
+
   return response.data;
 };
