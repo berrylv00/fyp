@@ -1,11 +1,10 @@
 package azh.bkd.demo.model;
+import azh.bkd.demo.model.RoomBooking;
 
-import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import azh.bkd.demo.repository.RoomBookingRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "room_bookings")
