@@ -22,91 +22,68 @@ public class BookingController {
     // =====================================
     // Student sends booking request
     // =====================================
+@PostMapping("/request")
+public ResponseEntity<RoomBooking> requestBooking(
+        @RequestBody RoomBooking booking) {
 
-    @PostMapping("/request")
-    public ResponseEntity<RoomBooking> requestBooking(
-            @RequestBody RoomBooking booking) {
+    // -----------------------------
+    // Step 1 : Request Received
+    // -----------------------------
+    booking.setStatus("PROCESSING");
+    booking.setSmartEngineStage("Reading Timetable...");
+    booking.setAdminMessage("Smart Engine is processing your request...");
 
-        booking.setStatus("PENDING");
-        booking.setAdminMessage("Awaiting Smart Engine Review");
+    RoomBooking savedBooking = bookingService.saveBooking(booking);
 
-        RoomBooking savedBooking = bookingService.saveBooking(booking);
+    // -----------------------------
+    // Step 2 : Checking Availability
+    // -----------------------------
+    bookingService.updateStage(savedBooking, "Checking Room Availability...");
+
+    List<RoomBooking> conflicts =
+            bookingService.checkConflicts(
+                    savedBooking.getRoomNo(),
+                    savedBooking.getDay(),
+                    savedBooking.getTimeSlot());
+
+    // -----------------------------
+    // Step 3 : Conflict Found
+    // -----------------------------
+    if (!conflicts.isEmpty()) {
+
+        RoomBooking conflictBooking = conflicts.get(0);
+
+        savedBooking.setConflictWith(conflictBooking.getStudentName());
+
+        bookingService.waitingForUser(
+                savedBooking,
+                "Lab-5"      // Temporary alternate room
+        );
+
+        savedBooking.setAdminMessage(
+                "Requested room is occupied. Waiting for user decision."
+        );
+
+        bookingService.saveBooking(savedBooking);
 
         return ResponseEntity.ok(savedBooking);
     }
 
-    // =====================================
-    // Admin Approve / Reject Booking
-    // =====================================
+    // -----------------------------
+    // Step 4 : Auto Approve
+    // -----------------------------
+    bookingService.updateStage(
+            savedBooking,
+            "Finalizing Allocation..."
+    );
 
-    @PostMapping("/review/{id}")
-    public ResponseEntity<?> reviewBooking(
+    bookingService.approve(
+            savedBooking,
+            "Approved automatically by Smart Engine."
+    );
 
-            @PathVariable Long id,
-
-            @RequestParam String action,
-
-            @RequestParam(required = false) String message) {
-
-        RoomBooking booking = bookingService
-                .getBookingById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Booking not found"));
-
-        if (action.equalsIgnoreCase("APPROVE")) {
-
-            List<RoomBooking> conflicts =
-                    bookingService.checkConflicts(
-
-                            booking.getRoomNo(),
-
-                            booking.getDay(),
-
-                            booking.getTimeSlot());
-
-            if (!conflicts.isEmpty()) {
-
-                booking.setStatus("REJECTED");
-
-                booking.setAdminMessage(
-                        "Smart Engine: Conflict Detected! Room already booked.");
-
-                bookingService.saveBooking(booking);
-
-                return ResponseEntity
-                        .badRequest()
-                        .body("Conflict Detected! Room already booked.");
-
-            }
-
-            booking.setStatus("APPROVED");
-
-            booking.setAdminMessage(
-
-                    (message == null || message.isBlank())
-
-                            ? "Approved Successfully."
-
-                            : message);
-
-        } else {
-
-            booking.setStatus("REJECTED");
-
-            booking.setAdminMessage(
-
-                    (message == null || message.isBlank())
-
-                            ? "Rejected by Admin."
-
-                            : message);
-
-        }
-
-        RoomBooking updatedBooking = bookingService.saveBooking(booking);
-
-        return ResponseEntity.ok(updatedBooking);
-    }
+    return ResponseEntity.ok(savedBooking);
+}
 
     // =====================================
     // Admin gets all bookings
