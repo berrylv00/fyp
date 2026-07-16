@@ -15,10 +15,15 @@ import java.util.List;
 public class BookingController {
 
     private final RoomBookingService bookingService;
+private final RoomService roomService;
 
-    public BookingController(RoomBookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+public BookingController(
+        RoomBookingService bookingService,
+        RoomService roomService) {
+
+    this.bookingService = bookingService;
+    this.roomService = roomService;
+}
 
     // =====================================
     // Student sends booking request
