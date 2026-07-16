@@ -32,65 +32,85 @@ public BookingController(
 public ResponseEntity<RoomBooking> requestBooking(
         @RequestBody RoomBooking booking) {
 
-    // -----------------------------
-    // Step 1 : Request Received
-    // -----------------------------
+    // Request Received
     booking.setStatus("PROCESSING");
     booking.setSmartEngineStage("Reading Timetable...");
     booking.setAdminMessage("Smart Engine is processing your request...");
 
     RoomBooking savedBooking = bookingService.saveBooking(booking);
 
-    // -----------------------------
-    // Step 2 : Checking Availability
-    // -----------------------------
-    bookingService.updateStage(savedBooking, "Checking Room Availability...");
+    // Stage 2
+    bookingService.updateStage(
+            savedBooking,
+            "Checking Room Availability..."
+    );
 
     List<RoomBooking> conflicts =
             bookingService.checkConflicts(
+
                     savedBooking.getRoomNo(),
+
                     savedBooking.getDay(),
+
                     savedBooking.getTimeSlot());
 
-    // -----------------------------
-    // Step 3 : Conflict Found
-    // -----------------------------
+    // ===============================
+    // Conflict Found
+    // ===============================
+
     if (!conflicts.isEmpty()) {
 
-        RoomBooking conflictBooking = conflicts.get(0);
+        Room alternate = roomService.findAlternateRoom();
 
-        savedBooking.setConflictWith(conflictBooking.getStudentName());
+        savedBooking.setConflictWith(
+                conflicts.get(0).getStudentName());
 
-        bookingService.waitingForUser(
-                savedBooking,
-                "Lab-5"      // Temporary alternate room
-        );
+        if (alternate != null) {
 
-        savedBooking.setAdminMessage(
-                "Requested room is occupied. Waiting for user decision."
-        );
+            bookingService.waitingForUser(
+
+                    savedBooking,
+
+                    alternate.getRoomNo());
+
+            savedBooking.setAdminMessage(
+                    "Conflict detected. Waiting for teacher response.");
+
+        } else {
+
+            bookingService.reject(
+
+                    savedBooking,
+
+                    "No alternate room available.");
+
+        }
 
         bookingService.saveBooking(savedBooking);
 
         return ResponseEntity.ok(savedBooking);
+
     }
 
-    // -----------------------------
-    // Step 4 : Auto Approve
-    // -----------------------------
+    // ===============================
+    // No Conflict
+    // ===============================
+
     bookingService.updateStage(
+
             savedBooking,
-            "Finalizing Allocation..."
-    );
+
+            "Finalizing Allocation...");
 
     bookingService.approve(
+
             savedBooking,
-            "Approved automatically by Smart Engine."
-    );
+
+            "Automatically approved by Smart Engine.");
 
     return ResponseEntity.ok(savedBooking);
-}
 
+}
     // =====================================
     // Admin gets all bookings
     // =====================================
