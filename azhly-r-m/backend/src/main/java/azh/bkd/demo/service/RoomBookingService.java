@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "room_bookings")
-public class RoomBooking {
+public class RoomBookingService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
