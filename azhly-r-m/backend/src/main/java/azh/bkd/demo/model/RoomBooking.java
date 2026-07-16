@@ -1,160 +1,125 @@
-package azh.bkd.demo.model;
+package azh.bkd.demo.service;
 
-import jakarta.persistence.*;
+import azh.bkd.demo.model.RoomBooking;
+import azh.bkd.demo.repository.RoomBookingRepository;
+import org.springframework.stereotype.Service;
 
-@Entity
-@Table(name = "room_bookings")
-public class RoomBooking {
+import java.util.List;
+import java.util.Optional;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Service
+public class RoomBookingService {
 
-    private String studentName;
+    private final RoomBookingRepository bookingRepository;
 
-    private String roomNo;
-
-    private String day;
-
-    private String timeSlot;
-
-    private String purpose;
-
-    // -------------------------
-    // Smart Engine Fields
-    // -------------------------
-
-    // PENDING, APPROVED, REJECTED,
-    // CONFLICT, WAITING_USER, ALTERNATE_ASSIGNED
-    private String status;
-
-    // Message shown to user/admin
-    private String adminMessage;
-
-    // Reading Timetable...
-    // Checking Availability...
-    // Detecting Conflict...
-    // Finding Alternate Room...
-    // Completed
-    private String smartEngineStage;
-
-    // Name of conflicting booking/person
-    private String conflictWith;
-
-    // Alternate room suggested
-    private String alternateRoom;
-
-    // YES / NO / WAITING
-    private String userDecision;
-
-    // Final approved room
-    private String approvedRoom;
+    public RoomBookingService(RoomBookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
 
     // ===========================
-    // Getters & Setters
+    // Save Booking
     // ===========================
 
-    public Long getId() {
-        return id;
+    public RoomBooking saveBooking(RoomBooking booking) {
+        return bookingRepository.save(booking);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    // ===========================
+    // Get All Bookings
+    // ===========================
+
+    public List<RoomBooking> getAllBookings() {
+        return bookingRepository.findAll();
     }
 
-    public String getStudentName() {
-        return studentName;
+    // ===========================
+    // Get Booking By ID
+    // ===========================
+
+    public Optional<RoomBooking> getBookingById(Long id) {
+        return bookingRepository.findById(id);
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    // ===========================
+    // Student Booking History
+    // ===========================
+
+    public List<RoomBooking> getStudentBookings(String studentName) {
+        return bookingRepository.findByStudentName(studentName);
     }
 
-    public String getRoomNo() {
-        return roomNo;
+    // ===========================
+    // Delete Booking
+    // ===========================
+
+    public void deleteBooking(Long id) {
+        bookingRepository.deleteById(id);
     }
 
-    public void setRoomNo(String roomNo) {
-        this.roomNo = roomNo;
+    // ===========================
+    // Conflict Detection
+    // ===========================
+
+    public List<RoomBooking> checkConflicts(
+            String roomNo,
+            String day,
+            String timeSlot) {
+
+        return bookingRepository.findByRoomNoAndDayAndTimeSlotAndStatus(
+                roomNo,
+                day,
+                timeSlot,
+                "APPROVED");
     }
 
-    public String getDay() {
-        return day;
+    // ===================================================
+    // SMART ENGINE METHODS
+    // ===================================================
+
+    public void updateStage(RoomBooking booking, String stage) {
+
+        booking.setSmartEngineStage(stage);
+
+        bookingRepository.save(booking);
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void approve(RoomBooking booking, String message) {
+
+        booking.setStatus("APPROVED");
+
+        booking.setAdminMessage(message);
+
+        booking.setSmartEngineStage("Completed");
+
+        booking.setApprovedRoom(booking.getRoomNo());
+
+        bookingRepository.save(booking);
     }
 
-    public String getTimeSlot() {
-        return timeSlot;
+    public void reject(RoomBooking booking, String reason) {
+
+        booking.setStatus("REJECTED");
+
+        booking.setAdminMessage(reason);
+
+        booking.setSmartEngineStage("Completed");
+
+        bookingRepository.save(booking);
     }
 
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
+    public void waitingForUser(RoomBooking booking,
+                               String alternateRoom) {
+
+        booking.setStatus("WAITING_USER");
+
+        booking.setAlternateRoom(alternateRoom);
+
+        booking.setUserDecision("WAITING");
+
+        booking.setSmartEngineStage(
+                "Waiting for User Decision");
+
+        bookingRepository.save(booking);
     }
 
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getAdminMessage() {
-        return adminMessage;
-    }
-
-    public void setAdminMessage(String adminMessage) {
-        this.adminMessage = adminMessage;
-    }
-
-    public String getSmartEngineStage() {
-        return smartEngineStage;
-    }
-
-    public void setSmartEngineStage(String smartEngineStage) {
-        this.smartEngineStage = smartEngineStage;
-    }
-
-    public String getConflictWith() {
-        return conflictWith;
-    }
-
-    public void setConflictWith(String conflictWith) {
-        this.conflictWith = conflictWith;
-    }
-
-    public String getAlternateRoom() {
-        return alternateRoom;
-    }
-
-    public void setAlternateRoom(String alternateRoom) {
-        this.alternateRoom = alternateRoom;
-    }
-
-    public String getUserDecision() {
-        return userDecision;
-    }
-
-    public void setUserDecision(String userDecision) {
-        this.userDecision = userDecision;
-    }
-
-    public String getApprovedRoom() {
-        return approvedRoom;
-    }
-
-    public void setApprovedRoom(String approvedRoom) {
-        this.approvedRoom = approvedRoom;
-    }
 }
