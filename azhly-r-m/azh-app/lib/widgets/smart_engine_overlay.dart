@@ -1,58 +1,67 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
 import 'dart:ui';
 
-/// Shows the "Smart Engine" processing overlay: a glowing AZHly icon that
-/// pulses while cycling through stage labels (Fetching timetable →
-/// Allocating room → Detecting conflicts), then swaps to a small
-/// approved/rejected result card that auto-dismisses.
-///
-/// Returns `true` if the request was approved, `false` if rejected.
+import 'package:flutter/material.dart';
+
+import '../theme/app_theme.dart';
+
+/// Smart Engine Processing Dialog
 Future<bool> showSmartEngineOverlay(
   BuildContext context, {
-  String processingTitle = 'Smart Engine',
+  String processingTitle = "Smart Engine",
 }) async {
   return await showDialog<bool?>(
         context: context,
         barrierDismissible: false,
         barrierColor: Colors.black.withValues(alpha: 0.55),
-        builder: (_) => _SmartEngineDialog(processingTitle: processingTitle),
+        builder: (_) => _SmartEngineDialog(
+          processingTitle: processingTitle,
+        ),
       ) ??
       false;
 }
 
 class _SmartEngineDialog extends StatefulWidget {
   final String processingTitle;
-  const _SmartEngineDialog({required this.processingTitle});
+
+  const _SmartEngineDialog({
+    super.key,
+    required this.processingTitle,
+  });
 
   @override
-  State<_SmartEngineDialog> createState() => _SmartEngineDialogState();
+  State<_SmartEngineDialog> createState() =>
+      _SmartEngineDialogState();
 }
 
-enum _EnginePhase { processing, result }
+enum _EnginePhase {
+  processing,
+  result,
+}
 
-class _SmartEngineDialogState extends State<_SmartEngineDialog>
+class _SmartEngineDialogState
+    extends State<_SmartEngineDialog>
     with TickerProviderStateMixin {
-  static const _stages = [
-    'Fetching timetable',
-    'Allocating room',
-    
-    'Detecting conflicts',
+  static const List<String> _stages = [
+    "Reading Timetable",
+    "Checking Availability",
+    "Detecting Conflicts",
   ];
 
   late final AnimationController _glowController;
   late final AnimationController _dotsController;
+
   Timer? _stageTimer;
   Timer? _resultTimer;
-  
 
   _EnginePhase _phase = _EnginePhase.processing;
-  int _stageIndex = 0;
-  bool _approved = true;
-  double _progress = 0;
 
+  int _stageIndex = 0;
+
+  bool _approved = true;
+
+  double _progress = 0;
 
   @override
   void initState() {
@@ -60,51 +69,74 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
 
     _glowController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1100),
+      duration: const Duration(
+        milliseconds: 1200,
+      ),
     )..repeat(reverse: true);
 
     _dotsController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 900),
+      duration: const Duration(
+        milliseconds: 900,
+      ),
     )..repeat();
 
-    // ~1.6s per stage x 3 stages ≈ 5s of "processing".
-    _stageTimer = Timer.periodic(const Duration(milliseconds: 1300), (t) {
-      if (_stageIndex >= _stages.length - 1) {
-         _progress = 1.0;
+    _stageTimer = Timer.periodic(
+      const Duration(milliseconds: 1300),
+      (timer) {
+        if (_stageIndex >= _stages.length - 1) {
+          setState(() {
+            _progress = 1.0;
+          });
 
-        t.cancel();
-        _finishProcessing();
-        return;
-      }
-      setState(() {
-         _stageIndex++;
-         _progress = (_stageIndex + 1) / _stages.length;
-    });
+          timer.cancel();
+
+          _finishProcessing();
+
+          return;
+        }
+
+        setState(() {
+          _stageIndex++;
+
+          _progress =
+              (_stageIndex + 1) / _stages.length;
+        });
+      },
+    );
   }
-  );
+
   void _finishProcessing() {
-    // Mostly approves — an occasional conflict gets rejected, which feels
-    // more "alive" than always succeeding.
     _approved = Random().nextDouble() < 0.85;
-    setState(() => _phase = _EnginePhase.result);
+
+    setState(() {
+      _phase = _EnginePhase.result;
+    });
+
     _glowController.stop();
+
     _dotsController.stop();
 
-    _resultTimer = Timer(const Duration(seconds: 2), () {
-      if (mounted) Navigator.of(context).pop(_approved);
-    });
+    _resultTimer = Timer(
+      const Duration(seconds: 2),
+      () {
+        if (mounted) {
+          Navigator.of(context).pop(_approved);
+        }
+      },
+    );
   }
 
   @override
   void dispose() {
     _stageTimer?.cancel();
     _resultTimer?.cancel();
+
     _glowController.dispose();
     _dotsController.dispose();
+
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -167,65 +199,51 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
       mainAxisSize: MainAxisSize.min,
       children: [
         AnimatedBuilder(
-          animation: _glowController,
-          builder: (context, child) {
-            final t = _glowController.value; // 0..1
-            final scale = 0.92 + (t * 0.16);
-            final glow = 0.25 + (t * 0.35);
-            return Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.purple.withValues(alpha: 0.12),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.purple.withValues(alpha: glow),
-                    blurRadius: 22,
-                    spreadRadius: 4,
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Transform.scale(
-                scale: scale,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [AppColors.purple, AppColors.purpleDark],
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: const Icon(Icons.bolt, color: Colors.white, size: 22),
-                ),
-              ),
-            );
-          },
+  animation: _glowController,
+  builder: (context, child) {
+
+    final glow = 8 + (_glowController.value * 10);
+
+    final scale = 0.97 + (_glowController.value * 0.05);
+
+    return Transform.scale(
+      scale: scale,
+      child: Container(
+        width: 92,
+        height: 92,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white.withValues(alpha: 0.04),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.08),
+          ),
+          boxShadow: [
+
+            BoxShadow(
+              color: Colors.deepPurple.withValues(alpha: 0.12),
+              blurRadius: glow,
+              spreadRadius: 1,
+            ),
+
+            BoxShadow(
+              color: Colors.blue.withValues(alpha: 0.10),
+              blurRadius: glow + 8,
+            ),
+
+          ],
         ),
-        const SizedBox(height: 18),
-        Text(
-          widget.processingTitle,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-            color: textColor,
+
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Image.asset(
+            "assets/images/azhly_logo.png",
+            fit: BoxFit.contain,
           ),
         ),
-        const SizedBox(height: 10),
-        AnimatedBuilder(
-          animation: _dotsController,
-          builder: (context, child) {
-            final dotCount =
-                1 + (_dotsController.value * 3).floor().clamp(0, 2);
-            final dots = '.' * dotCount;
-            return Text(
-              '${_stages[_stageIndex]}$dots',
-              const SizedBox(height: 16),
+      ),
+    );
+  },
+),
 
 ClipRRect(
   borderRadius: BorderRadius.circular(20),
