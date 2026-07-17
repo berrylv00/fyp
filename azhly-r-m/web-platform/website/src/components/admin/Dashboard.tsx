@@ -153,7 +153,7 @@ const [requests, setRequests] = useState<any[]>([]);
         <StatCard
           icon={Clock}
           iconBg="#f59e0b"
-          value={requests.filter(r => r.status === "PROCESSING").length}
+          value={requests.filter(r => r.status === "PROCESSING" || r.status === "PENDING").length}
           
           label="Pending Requests"
           sub="Approval Required"
