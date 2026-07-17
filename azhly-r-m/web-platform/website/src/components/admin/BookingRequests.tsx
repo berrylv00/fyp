@@ -632,7 +632,7 @@ Suggested Room: {r.alternateRoom}
 </div>
 )}
 
-{(pending || processing || waiting) && (
+{(pending || processing) && (
 
 <div className="mt-4">
 
@@ -687,27 +687,6 @@ processing
 
 </div>
 
-<div className="flex justify-end gap-3 mt-6">
-
-{waiting && (
-
-<button
-
-className="px-5 py-2 rounded-xl text-white font-semibold"
-
-style={{
-
-background:"#7C3AED"
-
-}}
-
->
-
-Override
-
-</button>
-
-)}
 
 {processing && (
 
