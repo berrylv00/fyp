@@ -165,19 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                Text(
-                  "or",
-                  style: TextStyle(
-                    color: dimColor,
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                OutlinedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.g_mobiledata),
-                  label: const Text("Sign in with Google"),
-                ),
+               
               ],
             ),
           ),
