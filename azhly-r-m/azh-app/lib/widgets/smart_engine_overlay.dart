@@ -63,6 +63,8 @@ class _SmartEngineDialogState
   bool _approved = true;
 
   double _progress = 0;
+  
+  int _progressPercent = 0;
 
   @override
   void initState() {
