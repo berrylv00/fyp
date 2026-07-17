@@ -137,143 +137,213 @@ class _SmartEngineDialogState
 
     super.dispose();
   }
-  @override
+@override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = isDark ? AppColors.darkCard : AppColors.lightCard;
-    final textColor = isDark ? AppColors.darkText : AppColors.lightText;
-    final dimColor = isDark ? AppColors.darkTextDim : AppColors.lightTextDim;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
-   return BackdropFilter(
-  filter: ImageFilter.blur(
-    sigmaX: 10,
-    sigmaY: 10,
-  ),
-  child: Dialog(
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    insetAnimationDuration: const Duration(milliseconds: 250),
+    final textColor =
+        isDark ? AppColors.darkText : AppColors.lightText;
 
-    child: AnimatedSize(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-      child: Container(
-        width: 280,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 28,
-        ),
- decoration: BoxDecoration(
-  borderRadius: BorderRadius.circular(28),
+    final dimColor =
+        isDark ? AppColors.darkTextDim : AppColors.lightTextDim;
 
-  color: const Color(0xFF081426).withValues(
-    alpha: 0.88,
-  ),
+    return BackdropFilter(
+      filter: ImageFilter.blur(
+        sigmaX: 10,
+        sigmaY: 10,
+      ),
+      child: Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        insetAnimationDuration:
+            const Duration(milliseconds: 250),
 
-  border: Border.all(
-    color: AppColors.purple.withValues(alpha: .35),
-    width: 1.2,
-  ),
+        child: AnimatedSize(
+          duration:
+              const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
 
-  boxShadow: [
+          child: Container(
+            width: 290,
 
-    BoxShadow(
-      color: Colors.black.withValues(alpha: .35),
-      blurRadius: 28,
-      offset: const Offset(0, 16),
-    ),
-
-    BoxShadow(
-      color: AppColors.purple.withValues(alpha: .18),
-      blurRadius: 40,
-      spreadRadius: 2,
-    ),
-
-  ],
-),
-
-  }
-
-  Widget _buildProcessing(Color textColor, Color dimColor) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AnimatedBuilder(
-  animation: _glowController,
-  builder: (context, child) {
-
-    final glow = 8 + (_glowController.value * 10);
-
-    final scale = 0.97 + (_glowController.value * 0.05);
-
-    return Transform.scale(
-      scale: scale,
-      child: Container(
-        width: 92,
-        height: 92,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white.withValues(alpha: 0.04),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.08),
-          ),
-          boxShadow: [
-
-            BoxShadow(
-              color: Colors.deepPurple.withValues(alpha: 0.12),
-              blurRadius: glow,
-              spreadRadius: 1,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 28,
             ),
 
-            BoxShadow(
-              color: Colors.blue.withValues(alpha: 0.10),
-              blurRadius: glow + 8,
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(28),
+
+              color: const Color(
+                0xFF081426,
+              ).withValues(alpha: .88),
+
+              border: Border.all(
+                color: AppColors.purple
+                    .withValues(alpha: .35),
+                width: 1.2,
+              ),
+
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black
+                      .withValues(alpha: .35),
+                  blurRadius: 28,
+                  offset: const Offset(0, 16),
+                ),
+
+                BoxShadow(
+                  color: AppColors.purple
+                      .withValues(alpha: .18),
+                  blurRadius: 40,
+                  spreadRadius: 2,
+                ),
+              ],
             ),
 
-          ],
-        ),
-
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Image.asset(
-            "assets/images/azhly_logo.png",
-            fit: BoxFit.contain,
+            child: _phase ==
+                    _EnginePhase.processing
+                ? _buildProcessing(
+                    textColor,
+                    dimColor,
+                  )
+                : _buildResult(
+                    textColor,
+                    dimColor,
+                  ),
           ),
         ),
       ),
     );
-  },
-),
+  }
 
-ClipRRect(
-  borderRadius: BorderRadius.circular(20),
-  child: LinearProgressIndicator(
-    value: _progress,
-    minHeight: 7,
-    backgroundColor:
-        Colors.white.withValues(alpha: 0.08),
-    valueColor: const AlwaysStoppedAnimation(
-      AppColors.purple,
-    ),
-  ),
-),
-              style: TextStyle(fontSize: 12, color: dimColor),
+  Widget _buildProcessing(
+    Color textColor,
+    Color dimColor,
+  ) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+
+        AnimatedBuilder(
+          animation: _glowController,
+          builder: (context, child) {
+
+            final glow =
+                8 + (_glowController.value * 10);
+
+            final scale =
+                0.97 +
+                    (_glowController.value * 0.05);
+
+            return Transform.scale(
+              scale: scale,
+              child: Container(
+                width: 92,
+                height: 92,
+
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+
+                  color: Colors.white
+                      .withValues(alpha: .04),
+
+                  border: Border.all(
+                    color: Colors.white
+                        .withValues(alpha: .08),
+                  ),
+
+                  boxShadow: [
+
+                    BoxShadow(
+                      color: Colors.deepPurple
+                          .withValues(alpha: .12),
+                      blurRadius: glow,
+                    ),
+
+                    BoxShadow(
+                      color: Colors.blue
+                          .withValues(alpha: .10),
+                      blurRadius: glow + 8,
+                    ),
+                  ],
+                ),
+
+                child: Padding(
+                  padding:
+                      const EdgeInsets.all(18),
+
+                  child: Image.asset(
+                    "assets/images/azhly_logo.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
             );
           },
         ),
-        const SizedBox(height: 14),
+      const SizedBox(height: 18),
+
+        Text(
+          widget.processingTitle,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        AnimatedBuilder(
+          animation: _dotsController,
+          builder: (context, child) {
+            final dotCount =
+                1 + (_dotsController.value * 3).floor().clamp(0, 2);
+
+            return Text(
+              "${_stages[_stageIndex]}${"." * dotCount}",
+              style: TextStyle(
+                color: dimColor,
+                fontSize: 12,
+              ),
+            );
+          },
+        ),
+
+        const SizedBox(height: 20),
+
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: LinearProgressIndicator(
+            value: _progress,
+            minHeight: 7,
+            backgroundColor:
+                Colors.white.withValues(alpha: .08),
+            valueColor:
+                const AlwaysStoppedAnimation(
+              AppColors.purple,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 18),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             for (int i = 0; i < _stages.length; i++) ...[
               _StepDot(active: i <= _stageIndex),
+
               if (i != _stages.length - 1)
                 Container(
-                  width: 14,
-                  height: 1.5,
+                  width: 22,
+                  height: 2,
                   color: i < _stageIndex
                       ? AppColors.purple
-                      : AppColors.purple.withValues(alpha: 0.2),
+                      : Colors.white.withValues(alpha: .10),
                 ),
             ],
           ],
@@ -282,37 +352,52 @@ ClipRRect(
     );
   }
 
-  Widget _buildResult(Color textColor, Color dimColor) {
-    final color = _approved ? AppColors.green : AppColors.red;
-    final icon = _approved ? Icons.check_circle : Icons.cancel;
-    final label = _approved ? 'Approved' : 'Rejected';
-    final sub = _approved
-        ? 'Room booked successfully'
-        : 'Conflict found — try another room';
+  Widget _buildResult(
+    Color textColor,
+    Color dimColor,
+  ) {
+    final color =
+        _approved ? AppColors.green : AppColors.red;
+
+    final icon =
+        _approved ? Icons.check_circle : Icons.cancel;
+
+    final title =
+        _approved ? "Approved" : "Conflict";
+
+    final subtitle = _approved
+        ? "Room allocated successfully."
+        : "Alternative room suggested.";
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      key: const ValueKey('result'),
       children: [
-        TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0, end: 1),
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.elasticOut,
-          builder: (context, v, child) =>
-              Transform.scale(scale: v, child: child),
-          child: Icon(icon, color: color, size: 46),
+        Icon(
+          icon,
+          color: color,
+          size: 56,
         ),
-        const SizedBox(height: 12),
+
+        const SizedBox(height: 18),
+
         Text(
-          label,
+          title,
           style: TextStyle(
-              fontSize: 14, fontWeight: FontWeight.w700, color: textColor),
+            color: textColor,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        const SizedBox(height: 4),
+
+        const SizedBox(height: 8),
+
         Text(
-          sub,
+          subtitle,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 11.5, color: dimColor),
+          style: TextStyle(
+            color: dimColor,
+            fontSize: 13,
+          ),
         ),
       ],
     );
@@ -321,18 +406,27 @@ ClipRRect(
 
 class _StepDot extends StatelessWidget {
   final bool active;
-  const _StepDot({required this.active});
+
+  const _StepDot({
+    required this.active,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      width: 7,
-      height: 7,
+      duration: const Duration(
+        milliseconds: 250,
+      ),
+      width: 8,
+      height: 8,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 2,
+      ),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color:
-            active ? AppColors.purple : AppColors.purple.withValues(alpha: 0.2),
+        color: active
+            ? AppColors.purple
+            : Colors.white.withValues(alpha: .15),
       ),
     );
   }
