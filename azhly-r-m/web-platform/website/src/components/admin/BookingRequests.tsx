@@ -529,7 +529,7 @@ No Booking Requests Found
 
 filtered.map((r)=>{
 
-const processing = r.status==="PROCESSING" || r.status === "PENDING";
+const processing = r.status==="PROCESSING";
 const waiting = r.status==="WAITING_USER";
 const approved = r.status==="APPROVED";
 const rejected = r.status==="REJECTED";
