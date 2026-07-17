@@ -1,7 +1,11 @@
 import { Building2, CalendarCheck, Clock, AlertTriangle } from "lucide-react";
 import type { ScreenType } from "@/types";
+import { useEffect, useState } from "react";
+import { getAllBookings } from "@/services/bookingService";
 
 const admin = JSON.parse(localStorage.getItem("admin") || "{}");
+
+const [requests, setRequests] = useState<any[]>([]);
 
 const hour = new Date().getHours();
 
@@ -123,7 +127,7 @@ const Dashboard = ({ onNavigate }: DashboardProps) => {
         <StatCard
           icon={Clock}
           iconBg="#f59e0b"
-          value={7}
+          value={requests.filter(r => r.status === "PROCESSING").length}
           label="Pending Requests"
           sub="Approval Required"
           action="View"
