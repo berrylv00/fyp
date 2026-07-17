@@ -71,12 +71,9 @@ try {
 
 if (!conflicts.isEmpty()) {
 
-    savedBooking.setConflictWith(
-            conflicts.get(0).getStudentName());
-
     bookingService.reject(
             savedBooking,
-            "Room is already booked for this time slot.");
+            "Room is already booked .");
 
     return ResponseEntity.ok(savedBooking);
 }
