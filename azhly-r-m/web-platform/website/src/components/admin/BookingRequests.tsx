@@ -605,33 +605,11 @@ Smart Engine
 </p>
 
 {smartEngineBadge(r.smartEngineStage)}
-
-{waiting && (
-<div
-className="mt-4 p-3 rounded-xl"
-style={{
-background:"#FEF3C7",
-color:"#92400E"
-}}
->
-
+{
 <p className="font-semibold text-sm">
 ⚠️ Conflict Detected
 </p>
-
-<p className="text-xs mt-1">
-Room conflict with {r.conflictWith}
-</p>
-
-{r.alternateRoom && (
-<p className="text-xs mt-1">
-Suggested Room: {r.alternateRoom}
-</p>
-)}
-
-</div>
-)}
-
+}
 {(pending || processing) && (
 
 <div className="mt-4">
