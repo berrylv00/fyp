@@ -99,7 +99,7 @@ const [requests, setRequests] = useState<any[]>([]);
 
   loadDashboardBookings();
 
-  const interval = setInterval(loadDashboardBookings, 3000);
+  const interval = setInterval(loadDashboardBookings, 1000);
 
   return () => clearInterval(interval);
 
