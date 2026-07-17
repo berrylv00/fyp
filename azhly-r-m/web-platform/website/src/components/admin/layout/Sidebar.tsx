@@ -26,7 +26,7 @@ const Sidebar = ({ active, onNavigate, pendingCount }: SidebarProps) => {
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
-        <img src= "azhly-r-m/web-platform/website/src/assets/logo.png"
+        <img src= "logo.png"
           alt="AZHly Logo"
           className="h-10 w-auto object-contain"
           style={{ filter: 'brightness(1.1)' }}
