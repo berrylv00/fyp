@@ -63,7 +63,7 @@ class _SmartEngineDialogState
   bool _approved = true;
 
   double _progress = 0;
-  
+
   int _progressPercent = 0;
 
   @override
@@ -104,6 +104,7 @@ class _SmartEngineDialogState
 
           _progress =
               (_stageIndex + 1) / _stages.length;
+              _progressPercent = (_progress * 100).round();
         });
       },
     );
