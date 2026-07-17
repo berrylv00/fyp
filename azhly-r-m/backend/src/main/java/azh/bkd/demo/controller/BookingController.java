@@ -38,13 +38,24 @@ public ResponseEntity<RoomBooking> requestBooking(
     booking.setAdminMessage("Smart Engine is processing your request...");
 
     RoomBooking savedBooking = bookingService.saveBooking(booking);
+    try {
+    Thread.sleep(1000);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+}
 
     // Stage 2
+    savedBooking.setStatus("PROCESSING");
+bookingService.saveBooking(savedBooking);
     bookingService.updateStage(
             savedBooking,
             "Checking Room Availability..."
     );
-
+try {
+    Thread.sleep(2000);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+}
     List<RoomBooking> conflicts =
             bookingService.checkConflicts(
 
