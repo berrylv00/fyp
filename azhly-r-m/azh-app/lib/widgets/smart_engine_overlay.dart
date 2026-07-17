@@ -317,8 +317,16 @@ class _SmartEngineDialogState
           },
         ),
 
-        const SizedBox(height: 20),
+        Text(
+  "$_progressPercent%",
+  style: TextStyle(
+    color: textColor,
+    fontWeight: FontWeight.bold,
+    fontSize: 13,
+  ),
+),
 
+const SizedBox(height: 8),
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: LinearProgressIndicator(
