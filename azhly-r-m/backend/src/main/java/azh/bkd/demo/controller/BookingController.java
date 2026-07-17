@@ -39,7 +39,7 @@ public ResponseEntity<RoomBooking> requestBooking(
 
     RoomBooking savedBooking = bookingService.saveBooking(booking);
     try {
-    Thread.sleep(2000);
+    Thread.sleep(1000);
 } catch (InterruptedException e) {
     Thread.currentThread().interrupt();
 }
@@ -52,7 +52,7 @@ bookingService.saveBooking(savedBooking);
             "Checking Room Availability..."
     );
 try {
-    Thread.sleep(3000);
+    Thread.sleep(3500);
 } catch (InterruptedException e) {
     Thread.currentThread().interrupt();
 }
