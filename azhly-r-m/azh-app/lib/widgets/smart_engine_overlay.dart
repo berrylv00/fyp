@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import 'dart:ui';
 
 /// Shows the "Smart Engine" processing overlay: a glowing AZHly icon that
 /// pulses while cycling through stage labels (Fetching timetable →
@@ -37,6 +38,7 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
   static const _stages = [
     'Fetching timetable',
     'Allocating room',
+    'double _progress = 0'
     'Detecting conflicts',
   ];
 
@@ -103,32 +105,54 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
     final textColor = isDark ? AppColors.darkText : AppColors.lightText;
     final dimColor = isDark ? AppColors.darkTextDim : AppColors.lightTextDim;
 
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetAnimationDuration: const Duration(milliseconds: 200),
-      child: AnimatedSize(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOut,
-        child: Container(
-          width: 240,
-          padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 20),
-          decoration: BoxDecoration(
-            color: cardColor,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.purple.withValues(alpha: 0.25),
-                blurRadius: 24,
-                spreadRadius: 2,
-              ),
-            ],
-          ),
-          child: _phase == _EnginePhase.processing
-              ? _buildProcessing(textColor, dimColor)
-              : _buildResult(textColor, dimColor),
+   return BackdropFilter(
+  filter: ImageFilter.blur(
+    sigmaX: 10,
+    sigmaY: 10,
+  ),
+  child: Dialog(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    insetAnimationDuration: const Duration(milliseconds: 250),
+
+    child: AnimatedSize(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      child: Container(
+        width: 280,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 28,
         ),
-      ),
-    );
+ decoration: BoxDecoration(
+  borderRadius: BorderRadius.circular(28),
+
+  color: const Color(0xFF081426).withValues(
+    alpha: 0.88,
+  ),
+
+  border: Border.all(
+    color: AppColors.purple.withValues(alpha: .35),
+    width: 1.2,
+  ),
+
+  boxShadow: [
+
+    BoxShadow(
+      color: Colors.black.withValues(alpha: .35),
+      blurRadius: 28,
+      offset: const Offset(0, 16),
+    ),
+
+    BoxShadow(
+      color: AppColors.purple.withValues(alpha: .18),
+      blurRadius: 40,
+      spreadRadius: 2,
+    ),
+
+  ],
+),
+
   }
 
   Widget _buildProcessing(Color textColor, Color dimColor) {
