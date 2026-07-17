@@ -52,7 +52,7 @@ bookingService.saveBooking(savedBooking);
             "Checking Room Availability..."
     );
 try {
-    Thread.sleep(3500);
+    Thread.sleep(4000);
 } catch (InterruptedException e) {
     Thread.currentThread().interrupt();
 }
