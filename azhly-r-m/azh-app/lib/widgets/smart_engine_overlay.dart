@@ -89,9 +89,6 @@ class _SmartEngineDialogState
       const Duration(milliseconds: 1300),
       (timer) {
         if (_stageIndex >= _stages.length - 1) {
-          setState(() {
-            
-          });
 
           timer.cancel();
 
