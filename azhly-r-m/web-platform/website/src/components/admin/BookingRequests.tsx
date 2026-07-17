@@ -194,11 +194,20 @@ const BookingRequests = () => {
 
   };
 
-  useEffect(() => {
+ useEffect(() => {
 
+  // Load immediately
+  loadBookings();
+
+  // Refresh every 3 seconds
+  const interval = setInterval(() => {
     loadBookings();
+  }, 3000);
 
-  }, []);
+  // Cleanup
+  return () => clearInterval(interval);
+
+}, []);
 
   const filtered = requests.filter((r) => {
 
