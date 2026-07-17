@@ -225,6 +225,20 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
             final dots = '.' * dotCount;
             return Text(
               '${_stages[_stageIndex]}$dots',
+              const SizedBox(height: 16),
+
+ClipRRect(
+  borderRadius: BorderRadius.circular(20),
+  child: LinearProgressIndicator(
+    value: _progress,
+    minHeight: 7,
+    backgroundColor:
+        Colors.white.withValues(alpha: 0.08),
+    valueColor: const AlwaysStoppedAnimation(
+      AppColors.purple,
+    ),
+  ),
+),
               style: TextStyle(fontSize: 12, color: dimColor),
             );
           },
