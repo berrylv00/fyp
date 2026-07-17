@@ -26,6 +26,7 @@ class _SmartEngineDialog extends StatefulWidget {
   final String processingTitle;
 
   const _SmartEngineDialog({
+    // ignore: unused_element_parameter
     super.key,
     required this.processingTitle,
   });
