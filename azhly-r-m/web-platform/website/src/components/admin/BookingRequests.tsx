@@ -33,12 +33,6 @@ const statusBadge = (status: string) => {
       label: "Processing",
     },
 
-    WAITING_USER: {
-      bg: "#F3E8D3",
-      color: "#92400E",
-      label: "Conflict Waiting",
-    },
-
     APPROVED: {
       bg: "#DCFCE7",
       color: "#16A34A",
