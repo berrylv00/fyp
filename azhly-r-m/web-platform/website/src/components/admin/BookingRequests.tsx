@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import {
   Search,
-  Filter,
   Cpu,
   ShieldAlert,
   CheckCircle2,
@@ -23,32 +22,33 @@ const statusBadge = (status: string) => {
 
   const map: Record<string, any> = {
 
-    processing: {
-      bg: "#dbeafe",
-      color: "#2563eb",
+    PROCESSING: {
+      bg: "#DBEAFE",
+      color: "#2563EB",
       label: "Processing",
     },
 
-    waiting_user: {
-      bg: "#fef3c7",
-      color: "#d97706",
+    WAITING_USER: {
+      bg: "#FEF3C7",
+      color: "#D97706",
       label: "Waiting User",
     },
 
-    approved: {
-      bg: "#dcfce7",
-      color: "#16a34a",
+    APPROVED: {
+      bg: "#DCFCE7",
+      color: "#16A34A",
       label: "Approved",
     },
 
-    rejected: {
-      bg: "#fee2e2",
-      color: "#dc2626",
+    REJECTED: {
+      bg: "#FEE2E2",
+      color: "#DC2626",
       label: "Rejected",
     },
+
   };
 
-  const s = map[status.toLowerCase()] || map.processing;
+  const s = map[status] || map.PROCESSING;
 
   return (
 
@@ -68,12 +68,15 @@ const statusBadge = (status: string) => {
 
 const smartEngineBadge = (stage: string) => {
 
-  if (!stage)
+  if (!stage) {
+
     return (
       <span className="text-slate-400 text-xs">
         —
       </span>
     );
+
+  }
 
   if (stage.includes("Reading")) {
 
@@ -94,15 +97,19 @@ const smartEngineBadge = (stage: string) => {
   if (stage.includes("Checking")) {
 
     return (
+
       <div className="flex items-center gap-2 text-purple-600">
 
         <Cpu size={15} />
 
         <span className="text-xs font-medium">
+
           {stage}
+
         </span>
 
       </div>
+
     );
 
   }
@@ -110,15 +117,19 @@ const smartEngineBadge = (stage: string) => {
   if (stage.includes("Waiting")) {
 
     return (
+
       <div className="flex items-center gap-2 text-orange-600">
 
         <ShieldAlert size={15} />
 
         <span className="text-xs font-medium">
+
           {stage}
+
         </span>
 
       </div>
+
     );
 
   }
@@ -126,15 +137,19 @@ const smartEngineBadge = (stage: string) => {
   if (stage.includes("Completed")) {
 
     return (
+
       <div className="flex items-center gap-2 text-green-600">
 
         <CheckCircle2 size={15} />
 
         <span className="text-xs font-medium">
+
           Completed
+
         </span>
 
       </div>
+
     );
 
   }
@@ -146,7 +161,9 @@ const smartEngineBadge = (stage: string) => {
       <Zap size={15} />
 
       <span className="text-xs">
+
         {stage}
+
       </span>
 
     </div>
@@ -158,13 +175,10 @@ const smartEngineBadge = (stage: string) => {
 const BookingRequests = () => {
 
   const [requests, setRequests] = useState<any[]>([]);
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [search, setSearch] = useState("");
 
-  const [filterStatus, setFilterStatus] =
-    useState("all");
-
-  const [search, setSearch] =
-    useState("");
-    const loadBookings = async () => {
+  const loadBookings = async () => {
 
     try {
 
@@ -172,9 +186,7 @@ const BookingRequests = () => {
 
       setRequests(data);
 
-    } catch (error) {
-
-      console.error(error);
+    } catch {
 
       toast.error("Unable to load bookings.");
 
@@ -191,11 +203,13 @@ const BookingRequests = () => {
   const filtered = requests.filter((r) => {
 
     const matchStatus =
+
       filterStatus === "all" ||
-      r.status.toLowerCase() ===
-      filterStatus.toLowerCase();
+
+      r.status.toLowerCase() === filterStatus.toLowerCase();
 
     const matchSearch =
+
       r.studentName
         .toLowerCase()
         .includes(search.toLowerCase()) ||
@@ -208,45 +222,9 @@ const BookingRequests = () => {
 
   });
 
-  const approve = async (id: number) => {
-
-    try {
-
-      await approveBooking(id);
-
-      toast.success("Booking Approved");
-
-      loadBookings();
-
-    } catch {
-
-      toast.error("Approval Failed");
-
-    }
-
-  };
-
-  const reject = async (id: number) => {
-
-    try {
-
-      await rejectBooking(id);
-
-      toast.success("Booking Rejected");
-
-      loadBookings();
-
-    } catch {
-
-      toast.error("Rejection Failed");
-
-    }
-
-  };
-
   const counts = {
 
-    all: requests.length,
+    total: requests.length,
 
     processing: requests.filter(
       r => r.status === "PROCESSING"
@@ -265,432 +243,531 @@ const BookingRequests = () => {
     ).length,
 
   };
-
-
   return (
 
 <div className="space-y-6">
 
-    {/* Heading */}
+{/* =========================
+        Heading
+========================= */}
 
-    <div>
+<div>
 
-        <h2 className="text-2xl font-bold text-slate-800">
+<h2 className="text-3xl font-bold text-slate-800">
 
-            Booking Requests
+Booking Requests
 
-        </h2>
+</h2>
 
-        <p className="text-slate-500 mt-1">
+<p className="text-slate-500 mt-2">
 
-            Manage Smart Room Booking Requests
+Monitor Smart Engine Room Allocation in Real Time
 
-        </p>
+</p>
 
-    </div>
+</div>
 
+{/* =========================
+      Summary Cards
+========================= */}
 
-    {/* Summary Cards */}
+<div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
 
-    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+{[
 
-        {[
-            {
-                label:"Total",
-                count:counts.all,
-                color:"#6366f1",
-                bg:"#eef2ff"
-            },
+{
 
-            {
-                label:"Processing",
-                count:counts.processing,
-                color:"#2563eb",
-                bg:"#dbeafe"
-            },
+title:"Total",
 
-            {
-                label:"Waiting",
-                count:counts.waiting,
-                color:"#d97706",
-                bg:"#fef3c7"
-            },
+count:counts.total,
 
-            {
-                label:"Approved",
-                count:counts.approved,
-                color:"#16a34a",
-                bg:"#dcfce7"
-            },
+color:"#6366F1",
 
-            {
-                label:"Rejected",
-                count:counts.rejected,
-                color:"#dc2626",
-                bg:"#fee2e2"
-            }
+bg:"#EEF2FF"
 
-        ].map(card=>(
+},
 
-            <div
+{
 
-                key={card.label}
+title:"Processing",
 
-                className="bg-white rounded-xl p-4"
+count:counts.processing,
 
-                style={{
+color:"#2563EB",
 
-                    border:"1px solid #e5eaf2",
+bg:"#DBEAFE"
 
-                    boxShadow:"0 2px 5px rgba(0,0,0,.04)"
+},
 
-                }}
+{
 
-            >
+title:"Waiting",
 
-                <p
-                    className="text-sm font-medium"
-                    style={{color:card.color}}
-                >
+count:counts.waiting,
 
-                    {card.label}
+color:"#D97706",
 
-                </p>
+bg:"#FEF3C7"
 
-                <h2
-                    className="text-3xl font-bold mt-2"
-                    style={{color:card.color}}
-                >
+},
 
-                    {card.count}
+{
 
-                </h2>
+title:"Approved",
 
-            </div>
+count:counts.approved,
 
-        ))}
+color:"#16A34A",
 
-    </div>
+bg:"#DCFCE7"
 
+},
 
-    {/* Toolbar */}
+{
 
-    <div
+title:"Rejected",
 
-        className="bg-white rounded-xl"
+count:counts.rejected,
 
-        style={{
+color:"#DC2626",
 
-            border:"1px solid #e5eaf2",
+bg:"#FEE2E2"
 
-            boxShadow:"0 2px 5px rgba(0,0,0,.04)"
+}
 
-        }}
+].map(card=>(
 
-    >
+<div
 
-        <div
+key={card.title}
 
-            className="flex flex-wrap justify-between items-center gap-4 p-5"
+className="rounded-3xl p-5 transition-all duration-300"
 
-        >
+style={{
 
-            {/* Search */}
+background:card.bg,
 
-            <div
+border:`2px solid ${card.color}`,
 
-                className="flex items-center gap-2 px-3 py-2 rounded-lg"
+boxShadow:`0 10px 30px ${card.color}22`
 
-                style={{
+}}
 
-                    border:"1px solid #e5eaf2",
+>
 
-                    background:"#f8fafc"
+<p
 
-                }}
+className="text-sm font-semibold"
 
-            >
+style={{
 
-                <Search
+color:card.color
 
-                    size={16}
+}}
 
-                    className="text-slate-400"
+>
 
-                />
+{card.title}
 
-                <input
+</p>
 
-                    value={search}
+<h2
 
-                    onChange={(e)=>setSearch(e.target.value)}
+className="text-3xl font-bold mt-2"
 
-                    placeholder="Search Student or Room..."
+style={{
 
-                    className="outline-none bg-transparent text-sm"
+color:card.color
 
-                />
+}}
 
-            </div>
+>
 
+{card.count}
 
-            {/* Filters */}
+</h2>
 
-            <div className="flex gap-2 flex-wrap">
+</div>
 
-                {[
-                    "all",
+))}
 
-                    "processing",
+</div>
 
-                    "waiting_user",
+{/* =========================
+        Toolbar
+========================= */}
 
-                    "approved",
+<div
 
-                    "rejected"
+className="bg-white rounded-3xl p-5"
 
-                ].map(item=>(
+style={{
 
-                    <button
+border:"1px solid #E2E8F0",
 
-                        key={item}
+boxShadow:"0 10px 30px rgba(0,0,0,.05)"
 
-                        onClick={()=>setFilterStatus(item)}
+}}
 
-                        className="px-3 py-1 rounded-lg text-sm font-medium"
+>
 
-                        style={{
+<div className="flex flex-wrap gap-4 justify-between">
 
-                            background:
+{/* Search */}
 
-                                filterStatus===item
+<div
 
-                                ? "#071224"
+className="flex items-center gap-3 px-4 py-3 rounded-xl"
 
-                                : "#f1f5f9",
+style={{
 
-                            color:
+background:"#F8FAFC",
 
-                                filterStatus===item
+border:"1px solid #E2E8F0"
 
-                                ? "#fff"
+}}
 
-                                : "#475569"
+>
 
-                        }}
+<Search size={18}/>
 
-                    >
+<input
 
-                        {item.replace("_"," ")}
+value={search}
 
-                    </button>
+onChange={(e)=>setSearch(e.target.value)}
 
-                ))}
+placeholder="Search Student or Room..."
 
-            </div>
+className="outline-none bg-transparent"
 
-        </div>
+ />
 
+</div>
 
-        {/* Table */}
+{/* Filters */}
 
-        <div className="overflow-x-auto">
+<div className="flex gap-2 flex-wrap">
 
-            <table className="w-full">
+{[
 
-                <thead>
+"all",
 
-                    <tr
+"processing",
 
-                        style={{
+"waiting_user",
 
-                            background:"#f8fafc"
+"approved",
 
-                        }}
+"rejected"
 
-                    >
+].map(item=>(
 
-                        {[
-                            "#",
+<button
 
-                            "Student",
+key={item}
 
-                            "Room",
+onClick={()=>setFilterStatus(item)}
 
-                            "Day",
+className="px-4 py-2 rounded-xl font-semibold transition-all"
 
-                            "Time",
+style={{
 
-                            "Purpose",
+background:
 
-                            "Smart Engine",
+filterStatus===item
 
-                            "Status",
+? "#071224"
 
-                            "Actions"
+: "#F1F5F9",
 
-                        ].map(head=>(
+color:
 
-                            <th
+filterStatus===item
 
-                                key={head}
+? "#fff"
 
-                                className="px-4 py-3 text-left text-xs uppercase text-slate-500"
+: "#475569"
 
-                            >
+}}
 
-                                {head}
+>
 
-                            </th>
+{item.replace("_"," ")}
 
-                        ))}
+</button>
 
-                    </tr>
+))}
 
-                </thead>
+</div>
 
-                <tbody>
-                  {filtered.length === 0 ? (
+</div>
 
-  <tr>
-    <td
-      colSpan={9}
-      className="text-center py-10 text-slate-400"
-    >
-      No Booking Requests Found
-    </td>
-  </tr>
+</div>
+{/* Booking Cards */}
+
+<div className="grid lg:grid-cols-2 gap-5 p-2">
+
+{filtered.length===0 ? (
+
+<div className="col-span-2 text-center py-20 text-slate-400">
+
+No Booking Requests Found
+
+</div>
 
 ) : (
 
-  filtered.map((r, index) => (
+filtered.map((r)=>{
 
-    <tr
-      key={r.id}
-      className="border-t hover:bg-slate-50"
-    >
+const processing = r.status==="PROCESSING";
+const waiting = r.status==="WAITING_USER";
+const approved = r.status==="APPROVED";
+const rejected = r.status==="REJECTED";
 
-      <td className="px-4 py-3">
-        {index + 1}
-      </td>
+return (
 
-      <td className="px-4 py-3 font-semibold">
-        {r.studentName}
-      </td>
+<div
 
-      <td className="px-4 py-3">
-        {r.roomNo}
-      </td>
+key={r.id}
 
-      <td className="px-4 py-3">
-        {r.day}
-      </td>
+className="rounded-3xl p-6 transition-all duration-500"
 
-      <td className="px-4 py-3">
-        {r.timeSlot}
-      </td>
+style={{
 
-      <td className="px-4 py-3">
-        {r.purpose}
-      </td>
+background:
 
-      {/* Smart Engine */}
+processing
 
-      <td className="px-4 py-3">
+? "#EFF6FF"
 
-        {smartEngineBadge(r.smartEngineStage)}
+: waiting
 
-      </td>
+? "#FFFBE8"
 
-      {/* Status */}
+: approved
 
-      <td className="px-4 py-3">
+? "#ECFDF5"
 
-        {statusBadge(r.status)}
+: "#FEF2F2",
 
-      </td>
+border:
 
-      {/* Actions */}
+processing
 
-      <td className="px-4 py-3">
+? "2px solid #60A5FA"
 
-        {r.status === "WAITING_USER" ? (
+: waiting
 
-          <button
+? "2px solid #FACC15"
 
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-white text-xs font-semibold"
+: approved
 
-            style={{
+? "2px solid #22C55E"
 
-              background:"#7c3aed"
+: "2px solid #EF4444",
 
-            }}
+boxShadow:
 
-          >
+processing
 
-            <ShieldAlert size={15}/>
+? "0 12px 30px rgba(96,165,250,.25)"
 
-            Override
+: waiting
 
-          </button>
+? "0 12px 30px rgba(250,204,21,.25)"
 
-        )
+: approved
 
-        : r.status==="PROCESSING" ? (
+? "0 12px 30px rgba(34,197,94,.25)"
 
-          <div
-            className="flex items-center gap-2 text-blue-600"
-          >
+: "0 12px 30px rgba(239,68,68,.25)"
 
-            <Clock3 size={15}/>
+}}
 
-            Processing
+>
 
-          </div>
+<div className="flex justify-between items-start">
 
-        )
+<div>
 
-        : r.status==="APPROVED" ? (
+<h3 className="text-xl font-bold text-slate-800">
 
-          <div
-            className="flex items-center gap-2 text-green-600"
-          >
+{r.studentName}
 
-            <CheckCircle2 size={16}/>
+</h3>
 
-            Approved
+<p className="text-slate-500 mt-1">
 
-          </div>
+📍 {r.roomNo}
 
-        )
+</p>
 
-        : (
+</div>
 
-          <div
-            className="flex items-center gap-2 text-red-600"
-          >
+{statusBadge(r.status)}
 
-            <XCircle size={16}/>
+</div>
 
-            Rejected
+<div className="mt-5 space-y-2 text-sm text-slate-600">
 
-          </div>
+<p>📅 {r.day}</p>
 
-        )}
+<p>🕒 {r.timeSlot}</p>
 
-      </td>
+<p>📚 {r.purpose}</p>
 
-    </tr>
+</div>
 
-  ))
+<div className="mt-5">
+
+<p className="text-xs font-bold text-slate-500 mb-2">
+
+Smart Engine
+
+</p>
+
+{smartEngineBadge(r.smartEngineStage)}
+
+{(processing || waiting) && (
+
+<div className="mt-4">
+
+<div
+
+className="h-2 rounded-full overflow-hidden"
+
+style={{
+
+background:"#E2E8F0"
+
+}}
+
+>
+
+<div
+
+className="h-full rounded-full transition-all duration-700"
+
+style={{
+
+width:
+
+processing
+
+? "55%"
+
+: "100%",
+
+background:
+
+processing
+
+? "#3B82F6"
+
+: "#F59E0B"
+
+}}
+
+>
+
+</div>
+
+</div>
+
+</div>
 
 )}
 
-</tbody>
-
-</table>
-
 </div>
+
+<div className="flex justify-end gap-3 mt-6">
+
+{waiting && (
+
+<button
+
+className="px-5 py-2 rounded-xl text-white font-semibold"
+
+style={{
+
+background:"#7C3AED"
+
+}}
+
+>
+
+Override
+
+</button>
+
+)}
+
+{processing && (
+
+<button
+
+disabled
+
+className="px-5 py-2 rounded-xl text-white"
+
+style={{
+
+background:"#3B82F6"
+
+}}
+
+>
+
+Processing...
+
+</button>
+
+)}
+
+{approved && (
+
+<button
+
+disabled
+
+className="px-5 py-2 rounded-xl text-white"
+
+style={{
+
+background:"#22C55E"
+
+}}
+
+>
+
+Approved
+
+</button>
+
+)}
+
+{rejected && (
+
+<button
+
+disabled
+
+className="px-5 py-2 rounded-xl text-white"
+
+style={{
+
+background:"#EF4444"
+
+}}
+
+>
+
+Rejected
+
+</button>
+
+)}
 
 </div>
 
@@ -698,6 +775,16 @@ const BookingRequests = () => {
 
 );
 
+})
+
+)}
+
+</div>
+
+</div>
+  )
 };
+
+
 
 export default BookingRequests;
