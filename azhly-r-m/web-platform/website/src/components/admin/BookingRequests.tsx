@@ -302,6 +302,13 @@ bg:"#EEF2FF"
 },
 
 {
+title:"Pending",
+count:counts.pending,
+color:"#d5920c",
+bg:"#f8f7ba"
+},
+
+{
 
 title:"Processing",
 
@@ -321,7 +328,7 @@ count:counts.waiting,
 
 color:"#D97706",
 
-bg:"#FEF3C7"
+bg:"#fee0c7"
 
 },
 
@@ -534,6 +541,7 @@ No Booking Requests Found
 
 filtered.map((r)=>{
 
+const pending = r.status==="PENDING";
 const processing = r.status==="PROCESSING";
 const waiting = r.status==="WAITING_USER";
 const approved = r.status==="APPROVED";
@@ -551,52 +559,36 @@ style={{
 
 background:
 
-processing
+pending
+? "#FFFBEB"
 
+: processing
 ? "#EFF6FF"
 
 : waiting
-
-? "#FFFBE8"
+? "#F5EBDD"
 
 : approved
-
 ? "#ECFDF5"
 
 : "#FEF2F2",
 
+
 border:
 
-processing
+pending
+? "2px solid #FACC15"
 
+: processing
 ? "2px solid #60A5FA"
 
 : waiting
-
-? "2px solid #FACC15"
+? "2px solid #92400E"
 
 : approved
-
 ? "2px solid #22C55E"
 
 : "2px solid #EF4444",
-
-boxShadow:
-
-processing
-
-? "0 12px 30px rgba(96,165,250,.25)"
-
-: waiting
-
-? "0 12px 30px rgba(250,204,21,.25)"
-
-: approved
-
-? "0 12px 30px rgba(34,197,94,.25)"
-
-: "0 12px 30px rgba(239,68,68,.25)"
-
 }}
 
 >
@@ -643,7 +635,33 @@ Smart Engine
 
 {smartEngineBadge(r.smartEngineStage)}
 
-{(processing || waiting) && (
+{waiting && (
+<div
+className="mt-4 p-3 rounded-xl"
+style={{
+background:"#FEF3C7",
+color:"#92400E"
+}}
+>
+
+<p className="font-semibold text-sm">
+⚠️ Conflict Detected
+</p>
+
+<p className="text-xs mt-1">
+Room conflict with {r.conflictWith}
+</p>
+
+{r.alternateRoom && (
+<p className="text-xs mt-1">
+Suggested Room: {r.alternateRoom}
+</p>
+)}
+
+</div>
+)}
+
+{(pending || processing || waiting) && (
 
 <div className="mt-4">
 
@@ -667,7 +685,10 @@ style={{
 
 width:
 
-processing
+pending
+? "25%"
+
+: processing
 
 ? "55%"
 
