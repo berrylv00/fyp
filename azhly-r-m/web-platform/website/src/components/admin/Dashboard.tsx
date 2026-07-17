@@ -78,6 +78,25 @@ const StatCard = ({
   </div>
 );
 
+useEffect(() => {
+
+  const loadDashboardBookings = async () => {
+    try {
+      const data = await getAllBookings();
+      setRequests(data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  loadDashboardBookings();
+
+  const interval = setInterval(loadDashboardBookings, 3000);
+
+  return () => clearInterval(interval);
+
+}, []);
+
 const Dashboard = ({ onNavigate }: DashboardProps) => {
   return (
     <div className="space-y-6">
@@ -128,6 +147,7 @@ const Dashboard = ({ onNavigate }: DashboardProps) => {
           icon={Clock}
           iconBg="#f59e0b"
           value={requests.filter(r => r.status === "PROCESSING").length}
+          
           label="Pending Requests"
           sub="Approval Required"
           action="View"
@@ -137,7 +157,7 @@ const Dashboard = ({ onNavigate }: DashboardProps) => {
         <StatCard
           icon={AlertTriangle}
           iconBg="#ef4444"
-          value={3}
+         value={requests.filter(r => r.status === "WAITING_USER").length}
           label="Conflicts"
           sub="Need Attention"
           action="View"
