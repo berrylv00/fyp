@@ -90,8 +90,7 @@ class _SmartEngineDialogState
       (timer) {
         if (_stageIndex >= _stages.length - 1) {
           setState(() {
-            _progress = 1.0;
-            _progressPercent = 100;
+            
           });
 
           timer.cancel();
@@ -117,6 +116,8 @@ class _SmartEngineDialogState
 
     setState(() {
       _phase = _EnginePhase.result;
+      _progress = 1.0;
+      _progressPercent = 100;
     });
 
     _glowController.stop();
