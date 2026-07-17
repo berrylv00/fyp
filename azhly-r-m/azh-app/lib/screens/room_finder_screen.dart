@@ -62,15 +62,44 @@ class _RoomFinderScreenState extends State<RoomFinderScreen> {
   }
 
   void _bookRoom(Room room) {
-    showBookingFormSheet(
-      context,
-      room: room,
-      submitLabel: 'Request to Smart Engine',
-      onSubmit: (teacherName, purpose, subject) async {
+  showBookingFormSheet(
+    context,
+    room: room,
+    submitLabel: 'Request to Smart Engine',
+    onSubmit: (teacherName, purpose, subject) async {
+
+      try {
+
+        await ApiService().requestBooking(
+          studentName: teacherName,
+          roomNo: room.roomNo,
+          day: "Monday",
+          timeSlot: room.timeSlot,
+        );
+
         await showSmartEngineOverlay(context);
-      },
-    );
-  }
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Booking request sent to Smart Engine"),
+          ),
+        );
+
+      } catch (e) {
+
+        debugPrint("Booking Error: $e");
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Booking failed"),
+          ),
+        );
+      }
+    },
+  );
+}
 
   Future<void> _approveRequest(RoomRequest request) async {
     final approved = await showSmartEngineOverlay(
