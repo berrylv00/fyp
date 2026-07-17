@@ -3,9 +3,8 @@ import type { ScreenType } from "@/types";
 import { useEffect, useState } from "react";
 import { getAllBookings } from "@/services/bookingService";
 
-const admin = JSON.parse(localStorage.getItem("admin") || "{}");
 
-const [requests, setRequests] = useState<any[]>([]);
+
 
 const hour = new Date().getHours();
 
@@ -78,7 +77,16 @@ const StatCard = ({
   </div>
 );
 
-useEffect(() => {
+const admin = JSON.parse(localStorage.getItem("admin") || "{}");
+interface DashboardProps{
+  onNavigate:(screen: ScreenType) => void;
+}
+
+const Dashboard = ({ onNavigate }: DashboardProps) => {
+
+const [requests, setRequests] = useState<any[]>([]);
+
+  useEffect(() => {
 
   const loadDashboardBookings = async () => {
     try {
@@ -97,7 +105,6 @@ useEffect(() => {
 
 }, []);
 
-const Dashboard = ({ onNavigate }: DashboardProps) => {
   return (
     <div className="space-y-6">
 
