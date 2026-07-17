@@ -69,40 +69,17 @@ try {
     // Conflict Found
     // ===============================
 
-    if (!conflicts.isEmpty()) {
+if (!conflicts.isEmpty()) {
 
-        Room alternate = roomService.findAlternateRoom();
+    savedBooking.setConflictWith(
+            conflicts.get(0).getStudentName());
 
-        savedBooking.setConflictWith(
-                conflicts.get(0).getStudentName());
+    bookingService.reject(
+            savedBooking,
+            "Room is already booked for this time slot.");
 
-        if (alternate != null) {
-
-            bookingService.waitingForUser(
-
-                    savedBooking,
-
-                    alternate.getRoomNo());
-
-            savedBooking.setAdminMessage(
-                    "Conflict detected. Alternate room available.");
-
-        } else {
-
-            bookingService.reject(
-
-                    savedBooking,
-
-                    "No alternate room available.");
-
-        }
-
-        
-
-        return ResponseEntity.ok(savedBooking);
-
-    }
-
+    return ResponseEntity.ok(savedBooking);
+}
     // ===============================
     // No Conflict
     // ===============================
