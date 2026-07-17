@@ -238,10 +238,6 @@ pending: requests.filter(
       r => r.status === "PROCESSING"
     ).length,
 
-    waiting: requests.filter(
-      r => r.status === "WAITING_USER"
-    ).length,
-
     approved: requests.filter(
       r => r.status === "APPROVED"
     ).length,
@@ -311,18 +307,6 @@ count:counts.processing,
 color:"#2563EB",
 
 bg:"#DBEAFE"
-
-},
-
-{
-
-title:"Waiting",
-
-count:counts.waiting,
-
-color:"#D97706",
-
-bg:"#fee0c7"
 
 },
 
@@ -468,9 +452,9 @@ className="outline-none bg-transparent"
 
 "all",
 
-"processing",
+"pending",
 
-"waiting_user",
+"processing",
 
 "approved",
 
@@ -537,7 +521,6 @@ filtered.map((r)=>{
 
 const pending = r.status==="PENDING";
 const processing = r.status==="PROCESSING";
-const waiting = r.status==="WAITING_USER";
 const approved = r.status==="APPROVED";
 const rejected = r.status==="REJECTED";
 
@@ -559,9 +542,6 @@ pending
 : processing
 ? "#EFF6FF"
 
-: waiting
-? "#F5EBDD"
-
 : approved
 ? "#ECFDF5"
 
@@ -575,9 +555,6 @@ pending
 
 : processing
 ? "2px solid #60A5FA"
-
-: waiting
-? "2px solid #92400E"
 
 : approved
 ? "2px solid #22C55E"
