@@ -91,6 +91,7 @@ class _SmartEngineDialogState
         if (_stageIndex >= _stages.length - 1) {
           setState(() {
             _progress = 1.0;
+            _progressPercent = 100;
           });
 
           timer.cancel();
