@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const purple = Color(0xFF7C5CFC);
   static const purpleDark = Color(0xFF5B3FE0);
+  static const navy = Color(0xFF0B1026);
+
+  static const navy2 = Color(0xFF1A1448);
 
   static const darkBg = Color(0xFF100C2C);
+  static const glass =
+    Color.fromARGB(70, 28, 24, 74);
   static const darkCard = Color(0xFF1B1642);
   static const darkCard2 = Color(0xFF221C52);
   static const darkBorder = Color(0xFF332C6E);
