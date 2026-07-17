@@ -38,7 +38,7 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
   static const _stages = [
     'Fetching timetable',
     'Allocating room',
-    'double _progress = 0'
+    
     'Detecting conflicts',
   ];
 
@@ -46,10 +46,13 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
   late final AnimationController _dotsController;
   Timer? _stageTimer;
   Timer? _resultTimer;
+  
 
   _EnginePhase _phase = _EnginePhase.processing;
   int _stageIndex = 0;
   bool _approved = true;
+  double _progress = 0;
+
 
   @override
   void initState() {
@@ -66,16 +69,20 @@ class _SmartEngineDialogState extends State<_SmartEngineDialog>
     )..repeat();
 
     // ~1.6s per stage x 3 stages ≈ 5s of "processing".
-    _stageTimer = Timer.periodic(const Duration(milliseconds: 1667), (t) {
+    _stageTimer = Timer.periodic(const Duration(milliseconds: 1300), (t) {
       if (_stageIndex >= _stages.length - 1) {
+         _progress = 1.0;
+
         t.cancel();
         _finishProcessing();
         return;
       }
-      setState(() => _stageIndex++);
+      setState(() {
+         _stageIndex++;
+         _progress = (_stageIndex + 1) / _stages.length;
     });
   }
-
+  );
   void _finishProcessing() {
     // Mostly approves — an occasional conflict gets rejected, which feels
     // more "alive" than always succeeding.
