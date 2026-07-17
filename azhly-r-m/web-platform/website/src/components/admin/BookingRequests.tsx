@@ -107,6 +107,23 @@ const smartEngineBadge = (stage: string) => {
 
   }
 
+  if (stage.includes("Finalizing")) {
+
+  return (
+
+    <div className="flex items-center gap-2 text-indigo-600">
+
+      <Cpu size={15} />
+
+      <span className="text-xs font-medium">
+        {stage}
+      </span>
+
+    </div>
+
+  );
+
+}
 
   if (stage.includes("Completed")) {
 
