@@ -59,12 +59,13 @@ class _SmartEngineDialogState
   _EnginePhase _phase = _EnginePhase.processing;
 
   int _stageIndex = 0;
+  int _progressPercent = 0;
 
   bool _approved = true;
 
   double _progress = 0;
 
-  int _progressPercent = 0;
+  
 
   @override
   void initState() {
