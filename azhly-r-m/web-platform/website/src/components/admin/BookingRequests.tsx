@@ -659,6 +659,8 @@ pending
 
 : "0 12px 30px rgba(239,68,68,.25)"
 
+
+
 }}
 
 >
@@ -675,74 +677,20 @@ pending
 
 
 {processing && (
-
-<button
-
-disabled
-
-className="px-5 py-2 rounded-xl text-white"
-
-style={{
-
-background:"#3B82F6"
-
-}}
-
->
-
-Processing...
-
-</button>
-
+<button disabled>Processing...</button>
 )}
 
 {approved && (
-
-<button
-
-disabled
-
-className="px-5 py-2 rounded-xl text-white"
-
-style={{
-
-background:"#22C55E"
-
-}}
-
->
-
-Approved
-
-</button>
-
+<button disabled>Approved</button>
 )}
 
 {rejected && (
-
-<button
-
-disabled
-
-className="px-5 py-2 rounded-xl text-white"
-
-style={{
-
-background:"#EF4444"
-
-}}
-
->
-
-Rejected
-
-</button>
-
+<button disabled>Rejected</button>
 )}
 
 </div>
 
-</div>
+
 
 );
 
