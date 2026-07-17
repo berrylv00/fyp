@@ -17,10 +17,15 @@ import {
 } from "@/services/bookingService";
 
 import { toast } from "sonner";
-
 const statusBadge = (status: string) => {
 
   const map: Record<string, any> = {
+
+    PENDING: {
+      bg: "#FEF3C7",
+      color: "#D97706",
+      label: "Pending",
+    },
 
     PROCESSING: {
       bg: "#DBEAFE",
@@ -29,9 +34,9 @@ const statusBadge = (status: string) => {
     },
 
     WAITING_USER: {
-      bg: "#FEF3C7",
-      color: "#D97706",
-      label: "Waiting User",
+      bg: "#F3E8D3",
+      color: "#92400E",
+      label: "Conflict Waiting",
     },
 
     APPROVED: {
@@ -48,24 +53,20 @@ const statusBadge = (status: string) => {
 
   };
 
-  const s = map[status] || map.PROCESSING;
+  const s = map[status] || map.PENDING;
 
   return (
-
     <span
       className="px-3 py-1 rounded-full text-xs font-semibold"
       style={{
-        background: s.bg,
-        color: s.color,
+        background:s.bg,
+        color:s.color,
       }}
     >
       {s.label}
     </span>
-
   );
-
 };
-
 const smartEngineBadge = (stage: string) => {
 
   if (!stage) {
@@ -234,6 +235,10 @@ const BookingRequests = () => {
   const counts = {
 
     total: requests.length,
+
+pending: requests.filter(
+ r => r.status === "PENDING"
+).length,
 
     processing: requests.filter(
       r => r.status === "PROCESSING"
