@@ -89,12 +89,23 @@ if (!conflicts.isEmpty()) {
             "Finalizing Allocation...");
 
     bookingService.approve(
+        savedBooking,
+        "Automatically approved by Smart Engine.");
 
-            savedBooking,
+// Make room occupied
+Room room = roomService.getRoomByRoomNo(savedBooking.getRoomNo());
 
-            "Automatically approved by Smart Engine.");
+if (room != null) {
 
-    return ResponseEntity.ok(savedBooking);
+    room.setStatus("OCCUPIED");
+
+    room.setAvailable(false);
+
+    roomService.saveRoom(room);
+
+}
+
+return ResponseEntity.ok(savedBooking);
 
 }
     // =====================================
