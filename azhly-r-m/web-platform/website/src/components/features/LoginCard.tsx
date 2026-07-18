@@ -158,19 +158,7 @@ export default function LoginCard() {
           <div className="flex-1 h-px bg-white/10" />
         </div>
 
-        {/* Google button */}
-        <button
-          type="button"
-          className="w-full rounded-xl py-4 text-white text-sm font-semibold flex items-center justify-center gap-3 transition-all hover:bg-white/10 active:scale-[0.98]"
-          style={{
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.12)",
-          }}
-        >
-          <GoogleIcon />
-          Sign in with Google
-        </button>
-
+        
         {/* Sign up */}
         <p className="text-center text-white/50 text-sm mt-1">
           Don't have an account?{" "}
