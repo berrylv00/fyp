@@ -90,6 +90,7 @@ class _RoomFinderScreenState extends State<RoomFinderScreen> {
       } catch (e) {
 
         debugPrint("Booking Error: $e");
+        if(! mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
