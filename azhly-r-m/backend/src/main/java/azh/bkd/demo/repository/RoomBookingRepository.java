@@ -1,4 +1,4 @@
-package azh.bkd.demo.service;
+package azh.bkd.demo.repository;
 
 import azh.bkd.demo.model.RoomBooking;
 import azh.bkd.demo.repository.RoomBookingRepository;
