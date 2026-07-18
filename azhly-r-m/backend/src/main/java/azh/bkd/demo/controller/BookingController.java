@@ -179,6 +179,44 @@ public ResponseEntity<RoomBooking> reviewBooking(
     return ResponseEntity.ok(booking);
 
 }
+
+// =====================================
+// Complete Booking
+// =====================================
+
+@PutMapping("/{id}/complete")
+public ResponseEntity<RoomBooking> completeBooking(
+        @PathVariable Long id) {
+
+    Optional<RoomBooking> booking =
+            bookingService.getBookingById(id);
+
+    if (booking.isEmpty()) {
+
+        return ResponseEntity.notFound().build();
+
+    }
+
+    RoomBooking roomBooking = booking.get();
+
+    bookingService.completeBooking(roomBooking);
+
+    // Make room available again
+    Room room = roomService
+            .getRoomByRoomNo(roomBooking.getRoomNo());
+
+    if (room != null) {
+
+        room.setStatus("AVAILABLE");
+
+        roomService.saveRoom(room);
+
+    }
+
+    return ResponseEntity.ok(roomBooking);
+
+}
+
     // =====================================
     // Delete Booking
     // =====================================
