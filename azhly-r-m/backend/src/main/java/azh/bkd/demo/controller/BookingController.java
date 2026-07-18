@@ -208,6 +208,8 @@ public ResponseEntity<RoomBooking> completeBooking(
     if (room != null) {
 
         room.setStatus("AVAILABLE");
+        
+        room.setStatus(true);
 
         roomService.saveRoom(room);
 
