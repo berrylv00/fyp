@@ -69,7 +69,11 @@ public Room findAlternateRoom() {
 
 }
 
+public Room getRoomByRoomNo(String roomNo) {
 
+    return roomRepository.findByRoomNo(roomNo);
+
+}
    
 }
 
