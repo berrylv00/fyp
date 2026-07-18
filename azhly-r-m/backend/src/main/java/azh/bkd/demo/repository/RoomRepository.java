@@ -21,7 +21,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findByAvailableTrueAndActiveTrue();
 
-    List<Room> findByRoomNo(String roomNo);
+     findByRoomNo(String roomNo);
 
     Optional<Room> findFirstByAvailableTrueAndActiveTrue();
 
