@@ -74,7 +74,7 @@ body: Container(
             padding: const EdgeInsets.all(28),
 
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.08),
+              color: Colors.white.withValues(alpha: .08),
 
               borderRadius: BorderRadius.circular(28),
 
@@ -135,7 +135,7 @@ body: Container(
                       ),
 
                       filled: true,
-                      fillColor: Colors.white.withOpacity(.06),
+                      fillColor: Colors.white.withValues(alpha: .06),
 
                       border: OutlineInputBorder(
                         borderRadius:
@@ -168,7 +168,7 @@ body: Container(
                       ),
 
                       filled: true,
-                      fillColor: Colors.white.withOpacity(.06),
+                      fillColor: Colors.white.withValues(alpha: .06),
 
                       border: OutlineInputBorder(
                         borderRadius:
@@ -202,7 +202,7 @@ body: Container(
                       ),
 
                       filled: true,
-                      fillColor: Colors.white.withOpacity(.06),
+                      fillColor: Colors.white.withValues(alpha: .06),
 
                       border: OutlineInputBorder(
                         borderRadius:
@@ -236,7 +236,7 @@ body: Container(
                       ),
 
                       filled: true,
-                      fillColor: Colors.white.withOpacity(.06),
+                      fillColor: Colors.white.withValues(alpha: .06),
 
                       border: OutlineInputBorder(
                         borderRadius:
