@@ -544,7 +544,7 @@ style={{
 
 background:
 
-: pending
+pending
 ? "#FFFBEB"
 
 : processing
@@ -553,11 +553,12 @@ background:
 : approved
 ? "#ECFDF5"
 
+: "#FEF2F2",
+
 : completed
+
 ? "#F3F4F6"
 
-: rejected
-? "#FEF2F2",
 
 border:
 
@@ -573,7 +574,7 @@ pending
 : completed
 ? "2px solid #9CA3AF"
 
-:  rejected
+:  Rejected
 ? "2px solid #EF4444",
 
 boxShadow:
