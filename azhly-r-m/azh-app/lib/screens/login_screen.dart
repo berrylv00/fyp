@@ -3,6 +3,7 @@ import '../theme/app_theme.dart';
 import 'register_screen.dart';
 import 'role_select_screen.dart';
 import '../services/api_service.dart';
+import 'dart:ui';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -95,7 +96,21 @@ class _LoginScreenState extends State<LoginScreen> {
     final dimColor = isDark ? AppColors.darkTextDim : AppColors.lightTextDim;
 
     return Scaffold(
-      body: SafeArea(
+      body: Container(
+decoration: const BoxDecoration(
+gradient: LinearGradient(
+begin: Alignment.topLeft,
+end: Alignment.bottomRight,
+colors: [
+
+AppColors.navy,
+AppColors.darkBg,
+AppColors.navy2,
+
+],
+
+),
+),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Form(
