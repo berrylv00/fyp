@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import '../models/roles.dart';
 import '../theme/app_theme.dart';
@@ -54,6 +56,7 @@ class RoleSelectScreen extends StatelessWidget {
             padding: const EdgeInsets.all(28),
 
             decoration: BoxDecoration(
+              // ignore: deprecated_member_use
               color: Colors.white.withOpacity(.08),
 
               borderRadius: BorderRadius.circular(28),
