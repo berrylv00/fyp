@@ -139,5 +139,38 @@ public void overrideReject(RoomBooking booking,
 
     bookingRepository.save(booking);
 }
+public void completeBooking(RoomBooking booking) {
+
+    booking.setStatus("COMPLETED");
+
+    booking.setSmartEngineStage("Completed");
+
+    booking.setAdminMessage("Class completed successfully.");
+
+    bookingRepository.save(booking);
+}
+
+public List<RoomBooking> getApprovedBookings() {
+
+    return bookingRepository.findByStatus("APPROVED");
+}
+
+public void markCompleted(Long id) {
+
+    Optional<RoomBooking> booking = bookingRepository.findById(id);
+
+    if (booking.isPresent()) {
+
+        RoomBooking b = booking.get();
+
+        b.setStatus("COMPLETED");
+
+        b.setSmartEngineStage("Completed");
+
+        bookingRepository.save(b);
+    }
+}
+
+
 
 }
