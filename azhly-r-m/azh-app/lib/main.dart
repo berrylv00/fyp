@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'screens/login_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() => runApp(const AzhlyApp());
 
@@ -28,7 +29,7 @@ class _AzhlyAppState extends State<AzhlyApp> {
       // No splash/bubble screen — app opens, waits 1 second, then goes
       // straight to Login. From there: Login -> Register (if needed) ->
       // Login -> Role select (Teacher / CR-GR / Student) -> Dashboard.
-      home: const StartupGate(),
+      home: const SplashScreen(),
     );
   }
 }
