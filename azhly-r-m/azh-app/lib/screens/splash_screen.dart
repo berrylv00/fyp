@@ -101,13 +101,19 @@ return Scaffold(
                 mainAxisSize: MainAxisSize.min,
                 children: [
 
-                  Image.asset(
-                    "assets/images/azhly_logo.png",
-                    
-                    width: 110,
-                    height: 110,
-                  ),
-
+                Image.asset(
+  "assets/images/azhly_logo.png",
+  width: 110,
+  height: 110,
+  errorBuilder: (context, error, stackTrace) {
+    print(error);
+    return const Icon(
+      Icons.error,
+      color: Colors.red,
+      size: 80,
+    );
+  },
+),
                   const SizedBox(height: 20),
 
                   const Text(
