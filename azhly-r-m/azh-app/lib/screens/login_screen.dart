@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(28),
 
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.08),
+              color: Colors.white.withValues(alpha: .08),
 
               borderRadius:
                   BorderRadius.circular(28),
@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       filled: true,
 
                       fillColor:
-                          Colors.white.withOpacity(.06),
+                          Colors.white.withValues(alpha: .06),
 
                       border: OutlineInputBorder(
                         borderRadius:
@@ -234,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       filled: true,
 
                       fillColor:
-                          Colors.white.withOpacity(.06),
+                          Colors.white.withValues(alpha: .06),
 
                       border: OutlineInputBorder(
                         borderRadius:

@@ -175,7 +175,7 @@ class _RoomFinderScreenState extends State<RoomFinderScreen> {
     RoomRequestStore.remove(request.id);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text(
           "Request Declined",
         ),

@@ -52,7 +52,7 @@ class BookingCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.meeting_room_outlined,
                 color: AppColors.purple,
               ),
@@ -117,7 +117,7 @@ class BookingCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             "${booking.room.department} • ${booking.room.blockName} • Floor ${booking.room.floorNo}",
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.purple,
               fontWeight: FontWeight.w600,
               fontSize: 12,
