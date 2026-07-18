@@ -145,8 +145,6 @@ public void completeBooking(RoomBooking booking) {
 
     booking.setSmartEngineStage("Completed");
 
-    booking.setAdminMessage("Class completed successfully.");
-
     bookingRepository.save(booking);
 }
 
