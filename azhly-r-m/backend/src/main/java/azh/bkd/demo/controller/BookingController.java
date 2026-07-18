@@ -87,8 +87,7 @@ if (!conflicts.isEmpty()) {
             savedBooking,
 
             "Finalizing Allocation...");
-
-    bookingService.approve(
+            bookingService.approve(
         savedBooking,
         "Automatically approved by Smart Engine.");
 
@@ -106,6 +105,14 @@ if (room != null) {
 }
 
 return ResponseEntity.ok(savedBooking);
+
+    bookingService.approve(
+
+            savedBooking,
+
+            "Automatically approved by Smart Engine.");
+
+    return ResponseEntity.ok(savedBooking);
 
 }
     // =====================================
