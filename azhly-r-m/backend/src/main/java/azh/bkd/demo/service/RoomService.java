@@ -74,7 +74,23 @@ public Room getRoomByRoomNo(String roomNo) {
     return roomRepository.findByRoomNo(roomNo);
 
 }
-   
+// ======================================
+// MAKE ROOM AVAILABLE AGAIN
+// ======================================
+
+public void makeAvailableAgain(String roomNo) {
+
+    Room room = roomRepository.findByRoomNo(roomNo);
+
+    if (room != null) {
+
+        room.setStatus("AVAILABLE");
+        room.setAvailable(true);
+
+        roomRepository.save(room);
+    }
+}   
+
 }
 
 
