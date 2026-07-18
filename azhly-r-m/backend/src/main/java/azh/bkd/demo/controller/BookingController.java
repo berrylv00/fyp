@@ -224,6 +224,29 @@ public ResponseEntity<RoomBooking> completeBooking(
     return ResponseEntity.ok(roomBooking);
 
 }
+// =====================================
+// AVAILABLE AGAIN
+// =====================================
+
+@PostMapping("/available-again/{id}")
+public ResponseEntity<RoomBooking> availableAgain(
+        @PathVariable Long id) {
+
+    RoomBooking booking = bookingService
+            .getBookingById(id)
+            .orElse(null);
+
+    if (booking == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    roomService.makeAvailableAgain(
+            booking.getApprovedRoom());
+
+    bookingService.completeBooking(booking);
+
+    return ResponseEntity.ok(booking);
+}
 
     // =====================================
     // Delete Booking
