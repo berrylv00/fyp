@@ -80,8 +80,20 @@ export const overrideAlternate = async (id: number) => {
 // Reject Request
 
 export const overrideReject = async (id: number) => {
+  
   const response = await api.post(
     `/bookings/override/reject/${id}`
+  );
+
+  return response.data;
+};
+// =========================
+// Available Again
+// =========================
+
+export const availableAgain = async (id: number) => {
+  const response = await api.post(
+    `/bookings/available-again/${id}`
   );
 
   return response.data;
