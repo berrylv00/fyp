@@ -111,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen>
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.purple.withOpacity(0.45),
+                          color: AppColors.purple.withValues(alpha: 0.45),
                           blurRadius: 45,
                           spreadRadius: 8,
                         ),
@@ -140,7 +140,7 @@ class _SplashScreenState extends State<SplashScreen>
                   Text(
                     "Smart Scheduling • Smarter Spaces",
                     style: TextStyle(
-                      color: Colors.white.withOpacity(.78),
+                      color: Colors.white.withValues(alpha: .78),
                       fontSize: 13,
                       letterSpacing: 0.8,
                     ),
