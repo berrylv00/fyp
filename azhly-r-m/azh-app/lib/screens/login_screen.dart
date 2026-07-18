@@ -97,95 +97,189 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: Container(
-decoration: const BoxDecoration(
-gradient: LinearGradient(
-begin: Alignment.topLeft,
-end: Alignment.bottomRight,
-colors: [
+  width: double.infinity,
+  height: double.infinity,
 
-AppColors.navy,
-AppColors.darkBg,
-AppColors.navy2,
+  decoration: const BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color(0xff071224),
+        Color(0xff15113A),
+        Color(0xff0F1D35),
+      ],
+    ),
+  ),
 
-],
+  child: Center(
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
 
-),
-),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "AZHly",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
-                    color: textColor,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 20,
+            sigmaY: 20,
+          ),
+
+          child: Container(
+            width: 370,
+            padding: const EdgeInsets.all(28),
+
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(.08),
+
+              borderRadius:
+                  BorderRadius.circular(28),
+
+              border: Border.all(
+                color: Colors.white24,
+              ),
+            ),
+
+            child: Form(
+              key: _formKey,
+
+              child: Column(
+                children: [
+
+                  const Icon(
+                    Icons.school_rounded,
+                    color: Colors.white,
+                    size: 70,
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  "Smart scheduling\nsmarter spaces",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: dimColor,
+
+                  const SizedBox(height: 16),
+
+                  const Text(
+                    "Welcome Back",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                TextFormField(
-                  controller: _emailCtrl,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
+
+                  const SizedBox(height: 8),
+
+                  const Text(
+                    "Login to your AZHly account",
+                    style: TextStyle(
+                      color: Colors.white70,
+                    ),
                   ),
-                  validator: (v) =>
-                      v == null || v.trim().isEmpty ? "Required" : null,
-                ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: _passwordCtrl,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
-                  ),
-                  validator: (v) => v == null || v.isEmpty ? "Required" : null,
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _login,
-                    child: const Text("Login"),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        "Don't have an account?",
-                        style: TextStyle(
-                          color: dimColor,
-                          fontSize: 12,
-                        ),
+
+                  const SizedBox(height: 30),
+
+                  TextFormField(
+                    controller: _emailCtrl,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+
+                    decoration: InputDecoration(
+                      labelText: "University Email",
+
+                      labelStyle: const TextStyle(
+                        color: Colors.white70,
+                      ),
+
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Colors.white70,
+                      ),
+
+                      filled: true,
+
+                      fillColor:
+                          Colors.white.withOpacity(.06),
+
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(15),
                       ),
                     ),
-                    TextButton(
-                      onPressed: _goToRegister,
-                      child: const Text("Register"),
+
+                    validator: (v) =>
+                        v == null || v.isEmpty
+                            ? "Required"
+                            : null,
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  TextFormField(
+                    controller: _passwordCtrl,
+                    obscureText: true,
+
+                    style: const TextStyle(
+                      color: Colors.white,
                     ),
-                  ],
-                ),
-               
-              ],
+
+                    decoration: InputDecoration(
+                      labelText: "Password",
+
+                      labelStyle: const TextStyle(
+                        color: Colors.white70,
+                      ),
+
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Colors.white70,
+                      ),
+
+                      filled: true,
+
+                      fillColor:
+                          Colors.white.withOpacity(.06),
+
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(15),
+                      ),
+                    ),
+
+                    validator: (v) =>
+                        v == null || v.isEmpty
+                            ? "Required"
+                            : null,
+                  ),
+
+                  const SizedBox(height: 25),
+
+                  SizedBox(
+                    width: double.infinity,
+
+                    child: ElevatedButton(
+                      onPressed: _login,
+
+                      child: const Text(
+                        "LOGIN",
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  TextButton(
+                    onPressed: _goToRegister,
+
+                    child: const Text(
+                      "Create New Account",
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
+    ),
+  ),
+),
     );
   }
 }
