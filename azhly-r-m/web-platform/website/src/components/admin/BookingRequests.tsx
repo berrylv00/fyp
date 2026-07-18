@@ -12,6 +12,7 @@ import {
   getAllBookings,
   approveBooking,
   rejectBooking,
+  availableAgain,
 } from "@/services/bookingService";
 
 import { toast } from "sonner";
@@ -241,7 +242,9 @@ pending: requests.filter(
     rejected: requests.filter(
       r => r.status === "REJECTED"
     ).length,
-
+completed: requests.filter(
+  r => r.status === "COMPLETED"
+).length,
   };
   return (
 
@@ -328,6 +331,12 @@ color:"#DC2626",
 
 bg:"#FEE2E2"
 
+},
+{
+title:"Completed",
+count:counts.completed,
+color:"#6B7280",
+bg:"#F3F4F6"
 }
 
 ].map(card=>(
@@ -454,7 +463,9 @@ className="outline-none bg-transparent"
 
 "approved",
 
-"rejected"
+"rejected",
+
+"completed"
 
 ].map(item=>(
 
@@ -518,6 +529,7 @@ filtered.map((r)=>{
 const pending = r.status==="PENDING";
 const processing = r.status==="PROCESSING";
 const approved = r.status==="APPROVED";
+const completed = r.status==="COMPLETED";
 const rejected = r.status==="REJECTED";
 
 return (
@@ -532,7 +544,7 @@ style={{
 
 background:
 
-pending
+: pending
 ? "#FFFBEB"
 
 : processing
@@ -541,7 +553,11 @@ pending
 : approved
 ? "#ECFDF5"
 
-: "#FEF2F2",
+: completed
+? "#F3F4F6"
+
+: rejected
+? "#FEF2F2",
 
 border:
 
@@ -554,7 +570,11 @@ pending
 : approved
 ? "2px solid #22C55E"
 
-: "2px solid #EF4444",
+: completed
+? "2px solid #9CA3AF"
+
+:  rejected
+? "2px solid #EF4444",
 
 boxShadow:
 
@@ -567,6 +587,10 @@ pending
 : approved
 ? "0 12px 30px rgba(34,197,94,.25)"
 
+: "0 12px 30px rgba(239,68,68,.25)"
+
+: completed
+? "0 12px 30px rgba(156,163,175,.25)"
 : "0 12px 30px rgba(239,68,68,.25)"
 
 }}
@@ -698,7 +722,31 @@ pending
 )}
 
 {approved && (
-<button disabled>Approved</button>
+
+<button
+  onClick={async () => {
+
+    await availableAgain(r.id);
+
+    toast.success("Room Available Again");
+
+    loadBookings();
+
+  }}
+
+  className="mt-5 w-full rounded-xl py-3 font-semibold"
+
+  style={{
+    background:"#6B7280",
+    color:"#fff"
+  }}
+
+>
+
+Available Again
+
+</button>
+
 )}
 
 {rejected && (
