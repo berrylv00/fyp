@@ -121,6 +121,13 @@ class _SplashScreenState extends State<SplashScreen>
   "assets/images/azhly_logo.png",
   width: 90,
   height: 90,
+  errorBuilder: (context, error, stackTrace) {
+    return const Icon(
+      Icons.error,
+      color: Colors.red,
+      size: 80,
+    );
+  },
 ),
                   ),
 
