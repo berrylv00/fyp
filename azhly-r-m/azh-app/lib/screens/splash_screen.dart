@@ -103,6 +103,7 @@ return Scaffold(
 
                   Image.asset(
                     "assets/images/azhly_logo.png",
+                    
                     width: 110,
                     height: 110,
                   ),
