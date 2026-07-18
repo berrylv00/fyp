@@ -120,8 +120,8 @@ class _SplashScreenState extends State<SplashScreen>
                     child: 
                     Image.asset(
                                        "assets/images/azhly_logo.png",
-                                        width: 90,
-                                        height: 90,
+                                        width: 180,
+                                        height: 180,
                     ),   
       
     
