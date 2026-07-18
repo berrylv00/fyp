@@ -148,18 +148,6 @@ public ResponseEntity<RoomBooking> reviewBooking(
                             : message);
 
             break;
-
-        case "APPROVE_ALTERNATE":
-
-            bookingService.approveAlternate(
-                    booking,
-                    alternateRoom,
-                    message.isBlank()
-                            ? "Alternate room approved by Admin."
-                            : message);
-
-            break;
-
         case "REJECT":
 
             bookingService.overrideReject(
