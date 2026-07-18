@@ -156,8 +156,17 @@ class _LoginScreenState extends State<LoginScreen> {
   height: 90,
 ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
 
+                   const Text(
+                             " Smart Room Allocation System",
+                               style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                         ),
+                                       ),
+                  const SizedBox(height: 16),
+                    
                   const Text(
                     "Welcome Back",
                     style: TextStyle(
@@ -171,6 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const Text(
                     "Login to your AZHly account",
+                    
                     style: TextStyle(
                       color: Colors.white70,
                     ),
