@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       } else {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(response["message"]),
@@ -61,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Error : $e"),
@@ -91,8 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    // ignore: unused_local_variable
     final textColor = isDark ? AppColors.darkText : AppColors.lightText;
 
+    // ignore: unused_local_variable
     final dimColor = isDark ? AppColors.darkTextDim : AppColors.lightTextDim;
 
     return Scaffold(
