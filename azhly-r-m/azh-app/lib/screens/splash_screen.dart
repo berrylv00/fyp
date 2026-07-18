@@ -75,11 +75,13 @@ return Scaffold(
       ),
     ),
     child: Center(
+      
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(28),
           child: BackdropFilter(
+            
             filter: ImageFilter.blur(
               sigmaX: 20,
               sigmaY: 20,
@@ -101,12 +103,7 @@ return Scaffold(
                 mainAxisSize: MainAxisSize.min,
                 children: [
 
-                Image.asset(
-  "assets/images/azhly_logo.png",
-  width: 110,
-  height: 110,
-    
-                ),
+              
           const SizedBox(height: 20),
 
                   const Text(
@@ -129,7 +126,12 @@ return Scaffold(
                       fontSize: 16,
                     ),
                   ),
-
+  Image.asset(
+  "assets/images/azhly_logo.png",
+  width: 110,
+  height: 110,
+    
+                ),
                   const SizedBox(height: 35),
 
                   SizedBox(
