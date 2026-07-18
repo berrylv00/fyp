@@ -91,11 +91,23 @@ body: Container(
               child: Column(
                 children: [
 
-                  const Icon(
-                    Icons.person_add_alt_1_rounded,
-                    color: Colors.white,
-                    size: 70,
-                  ),
+              Image.asset(
+  "assets/images/azhly_logo.png",
+  width: 90,
+  height: 90,
+),
+
+                  const SizedBox(height: 8),
+
+                   const Text(
+                             " Smart Room Allocation System",
+                               style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                         ),
+                                       ),
+                  
+                    
 
                   const SizedBox(height: 16),
 
