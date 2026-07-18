@@ -77,6 +77,7 @@ class _RoomFinderScreenState extends State<RoomFinderScreen> {
           timeSlot: room.timeSlot,
         );
 
+        if (!mounted) return;
         await showSmartEngineOverlay(context);
 
         if (!mounted) return;
