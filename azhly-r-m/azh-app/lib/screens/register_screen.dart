@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import 'dart:ui';
 
 /// New-user registration. On success, pops back to LoginScreen with the
 /// chosen username so the person can log in right away.
