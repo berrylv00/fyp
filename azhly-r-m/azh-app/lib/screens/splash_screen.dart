@@ -105,8 +105,6 @@ return Scaffold(
   "assets/images/azhly_logo.png",
   width: 110,
   height: 110,
-
-    
     
                 ),
           const SizedBox(height: 20),
