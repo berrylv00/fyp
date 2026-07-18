@@ -150,11 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
 
-                  const Icon(
-                    Icons.school_rounded,
-                    color: Colors.white,
-                    size: 70,
-                  ),
+                  Image.asset(
+  "assets/images/azhly_logo.png",
+  width: 90,
+  height: 90,
+),
 
                   const SizedBox(height: 16),
 
