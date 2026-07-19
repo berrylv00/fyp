@@ -92,6 +92,7 @@ if (!conflicts.isEmpty()) {
         "Automatically approved by Smart Engine.");
 
 // Make room occupied
+
 Room room = roomService.getRoomByRoomNo(savedBooking.getRoomNo());
 
 if (room != null) {
@@ -104,26 +105,6 @@ if (room != null) {
 
 }
 
-
-
-    bookingService.approve(
-    savedBooking,
-    "Automatically approved by Smart Engine."
-);
-
-// Make room occupied
-public Room getRoomByRoomNo(String roomNo) {
-
-    return roomRepository.findByRoomNo(roomNo);
-
-}
-if (room != null) {
-
-    room.setStatus("OCCUPIED");
-    room.setAvailable(false);
-    roomService.saveRoom(room);
-
-}
 
 return ResponseEntity.ok(savedBooking);
 }
