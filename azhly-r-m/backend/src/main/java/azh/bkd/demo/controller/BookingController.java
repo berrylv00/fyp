@@ -185,6 +185,39 @@ public ResponseEntity<RoomBooking> reviewBooking(
     return ResponseEntity.ok(booking);
 
 }
+// =====================================
+// Available Again
+// =====================================
+
+@PostMapping("/available-again/{id}")
+public ResponseEntity<String> availableAgain(
+        @PathVariable Long id) {
+
+    RoomBooking booking = bookingService
+            .getBookingById(id)
+            .orElse(null);
+
+    if (booking == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    Room room = roomService
+            .getAllRooms()
+            .stream()
+            .filter(r -> r.getRoomNo().equals(booking.getRoomNo()))
+            .findFirst()
+            .orElse(null);
+
+    if (room != null) {
+        room.setStatus("AVAILABLE");
+        room.setAvailable(true);
+        roomService.saveRoom(room);
+    }
+
+    bookingService.availableAgain(booking);
+
+    return ResponseEntity.ok("Room is Available Again.");
+}
 
 // =====================================
 // Complete Booking
@@ -223,29 +256,6 @@ public ResponseEntity<RoomBooking> completeBooking(
 
     return ResponseEntity.ok(roomBooking);
 
-}
-// =====================================
-// AVAILABLE AGAIN
-// =====================================
-
-@PostMapping("/available-again/{id}")
-public ResponseEntity<RoomBooking> availableAgain(
-        @PathVariable Long id) {
-
-    RoomBooking booking = bookingService
-            .getBookingById(id)
-            .orElse(null);
-
-    if (booking == null) {
-        return ResponseEntity.notFound().build();
-    }
-
-    roomService.makeAvailableAgain(
-            booking.getApprovedRoom());
-
-    bookingService.completeBooking(booking);
-
-    return ResponseEntity.ok(booking);
 }
 
     // =====================================
