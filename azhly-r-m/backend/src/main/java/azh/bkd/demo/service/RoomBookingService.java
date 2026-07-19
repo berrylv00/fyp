@@ -139,6 +139,18 @@ public void overrideReject(RoomBooking booking,
 
     bookingRepository.save(booking);
 }
+
+// ======================================
+// AVAILABLE AGAIN
+// ======================================
+
+public void availableAgain(RoomBooking booking) {
+
+    booking.setStatus("COMPLETED");
+    booking.setSmartEngineStage("Completed");
+
+    bookingRepository.save(booking);
+}
 public void completeBooking(RoomBooking booking) {
 
     booking.setStatus("COMPLETED");
