@@ -52,7 +52,7 @@ bookingService.saveBooking(booking);
 try{
 Thread.sleep(1000);
 }catch (InterruptedException e) {
-  Thread.currentRhread().interrupt();
+  Thread.currentThread().interrupt();
 }
 
 // Processing
@@ -67,7 +67,7 @@ bookingService.updateStage(
 try{
 Thread.sleep(3000);
 }catch (InterruptedException e) {
-  Thread.currentRhread().interrupt();
+  Thread.currentThread().interrupt();
 }
 // Check conflict
 List<RoomBooking> conflicts =
@@ -86,7 +86,7 @@ if (!conflicts.isEmpty()) {
     try{
 Thread.sleep(1000);
 }catch (InterruptedException e) {
-  Thread.currentRhread().interrupt();
+  Thread.currentThread().interrupt();
 }
 
     bookingService.reject(
@@ -107,7 +107,7 @@ bookingService.updateStage(
 try{
 Thread.sleep(1000);
 }catch (InterruptedException e) {
-  Thread.currentRhread().interrupt();
+  Thread.currentThread().interrupt();
 }
 
 
