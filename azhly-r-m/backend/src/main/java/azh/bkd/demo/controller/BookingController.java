@@ -48,15 +48,55 @@ public ResponseEntity<RoomBooking> requestBooking(
     // Stage 2
     savedBooking.setStatus("PROCESSING");
 bookingService.saveBooking(savedBooking);
-    bookingService.updateStage(
-            savedBooking,
-            "Checking Room Availability..."
-    );
+
+    
 try {
-    Thread.sleep(4000);
+    Thread.sleep(1000);
 } catch (InterruptedException e) {
     Thread.currentThread().interrupt();
 }
+
+bookingService.updateStage(
+    savedBooking,
+    "Checking Room Availability...");
+
+Thread.sleep(3000);
+
+
+bookingService.updateStage(
+    savedBooking,
+    "Finalizing Allocation...");
+
+ Thread.sleep(1000);
+ bookingService.updateStage(
+        savedBooking,
+        "Finalizing Allocation...");
+
+try {
+    Thread.sleep(1000);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+}
+
+bookingService.approve(
+        savedBooking,
+        "Automatically approved by Smart Engine.");
+        
+        
+        bookingService.updateStage(
+        savedBooking,
+        "Finalizing Allocation...");
+
+try {
+    Thread.sleep(1000);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+}
+
+bookingService.reject(
+        savedBooking,
+        "Room is already booked.");
+
     List<RoomBooking> conflicts =
             bookingService.checkConflicts(
 
