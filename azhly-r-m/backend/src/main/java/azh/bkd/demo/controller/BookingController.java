@@ -83,11 +83,16 @@ if (!conflicts.isEmpty()) {
     // ===============================
 
     bookingService.updateStage(
+        savedBooking,
+        "Finalizing Allocation...");
 
-            savedBooking,
+try {
+    Thread.sleep(1000);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+}
 
-            "Finalizing Allocation...");
-            bookingService.approve(
+bookingService.approve(
         savedBooking,
         "Automatically approved by Smart Engine.");
 
