@@ -71,10 +71,20 @@ try {
     // ===============================
 
 if (!conflicts.isEmpty()) {
+bookingService.updateStage(
+        savedBooking,
+        "Finalizing Allocation...");
 
-    bookingService.reject(
-            savedBooking,
-            "Room is already booked .");
+try {
+    Thread.sleep(1000);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+}
+
+bookingService.reject(
+        savedBooking,
+        "Room is already booked.");
+   
 
     return ResponseEntity.ok(savedBooking);
 }
