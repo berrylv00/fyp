@@ -104,16 +104,28 @@ if (room != null) {
 
 }
 
-return ResponseEntity.ok(savedBooking);
+
 
     bookingService.approve(
+    savedBooking,
+    "Automatically approved by Smart Engine."
+);
 
-            savedBooking,
+// Make room occupied
+public Room getRoomByRoomNo(String roomNo) {
 
-            "Automatically approved by Smart Engine.");
+    return roomRepository.findByRoomNo(roomNo);
 
-    return ResponseEntity.ok(savedBooking);
+}
+if (room != null) {
 
+    room.setStatus("OCCUPIED");
+    room.setAvailable(false);
+    roomService.saveRoom(room);
+
+}
+
+return ResponseEntity.ok(savedBooking);
 }
     // =====================================
     // Admin gets all bookings
@@ -248,7 +260,7 @@ public ResponseEntity<RoomBooking> completeBooking(
 
         room.setStatus("AVAILABLE");
         
-        room.setStatus(true);
+        room.setAvailable(true);
 
         roomService.saveRoom(room);
 

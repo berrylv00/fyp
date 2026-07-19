@@ -157,6 +157,9 @@ public void completeBooking(RoomBooking booking) {
 
     booking.setSmartEngineStage("Completed");
 
+    
+    booking.setAdminMessage("Room is available again.");
+
     bookingRepository.save(booking);
 }
 
@@ -179,8 +182,7 @@ public void markCompleted(Long id) {
 
         bookingRepository.save(b);
     }
+    
 }
-
-
 
 }
