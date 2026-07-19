@@ -95,13 +95,22 @@ if (!conflicts.isEmpty()) {
 
 Room room = roomService.getRoomByRoomNo(savedBooking.getRoomNo());
 
+System.out.println("Booking Room = " + savedBooking.getRoomNo());
+
+System.out.println("Room Found = " + room);
+
 if (room != null) {
 
     room.setStatus("OCCUPIED");
-
     room.setAvailable(false);
 
     roomService.saveRoom(room);
+
+    System.out.println("Room Updated Successfully");
+
+} else {
+
+    System.out.println("Room NOT FOUND");
 
 }
 
