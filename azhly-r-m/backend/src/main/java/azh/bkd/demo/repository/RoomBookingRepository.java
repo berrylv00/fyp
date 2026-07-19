@@ -1,174 +1,20 @@
 package azh.bkd.demo.repository;
 
 import azh.bkd.demo.model.RoomBooking;
-import azh.bkd.demo.repository.RoomBookingRepository;
-
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class RoomBookingService {
+public interface RoomBookingRepository extends JpaRepository<RoomBooking, Long> {
 
-    private final RoomBookingRepository bookingRepository;
-
-    public RoomBookingService(RoomBookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
-
-    // Save Booking
-    public RoomBooking saveBooking(RoomBooking booking) {
-        return bookingRepository.save(booking);
-    }
-
-    // Get All Bookings
-    public List<RoomBooking> getAllBookings() {
-        return bookingRepository.findAll();
-    }
-
-    // Get Booking By ID
-    public Optional<RoomBooking> getBookingById(Long id) {
-        return bookingRepository.findById(id);
-    }
-
-    // Student Booking History
-    public List<RoomBooking> getStudentBookings(String studentName) {
-        return bookingRepository.findByStudentName(studentName);
-    }
-
-    // Delete Booking
-    public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
-    }
-
-    // Conflict Detection
-    public List<RoomBooking> checkConflicts(
+    List<RoomBooking> findByRoomNoAndDayAndTimeSlotAndStatus(
             String roomNo,
             String day,
-            String timeSlot) {
+            String timeSlot,
+            String status
+    );
 
-        return bookingRepository.findByRoomNoAndDayAndTimeSlotAndStatus(
-                roomNo,
-                day,
-                timeSlot,
-                "APPROVED");
-    }
+    List<RoomBooking> findByStudentName(String studentName);
 
-    // Smart Engine Methods
-
-    public void updateStage(RoomBooking booking, String stage) {
-        booking.setSmartEngineStage(stage);
-        bookingRepository.save(booking);
-    }
-
-    public void approve(RoomBooking booking, String message) {
-
-        booking.setStatus("APPROVED");
-        booking.setAdminMessage(message);
-        booking.setSmartEngineStage("Completed");
-        booking.setApprovedRoom(booking.getRoomNo());
-
-        bookingRepository.save(booking);
-    }
-
-    public void reject(RoomBooking booking, String reason) {
-
-        booking.setStatus("REJECTED");
-        booking.setAdminMessage(reason);
-        booking.setSmartEngineStage("Completed");
-
-        bookingRepository.save(booking);
-    }
-
-    public void waitingForUser(RoomBooking booking,
-                               String alternateRoom) {
-
-        booking.setStatus("WAITING_USER");
-        booking.setAlternateRoom(alternateRoom);
-        booking.setUserDecision("WAITING");
-        booking.setSmartEngineStage("Waiting for User Decision");
-
-        bookingRepository.save(booking);
-    }
-// ======================================
-// ADMIN OVERRIDE METHODS
-// ======================================
-
-public void approveOriginal(RoomBooking booking,
-                            String message) {
-
-    booking.setStatus("APPROVED");
-
-    booking.setApprovedRoom(booking.getRoomNo());
-
-    booking.setAdminMessage(message);
-
-    booking.setSmartEngineStage("Admin Override");
-
-    bookingRepository.save(booking);
-}
-
-public void approveAlternate(RoomBooking booking,
-                             String alternateRoom,
-                             String message) {
-
-    booking.setStatus("APPROVED");
-
-    booking.setRoomNo(alternateRoom);
-
-    booking.setApprovedRoom(alternateRoom);
-
-    booking.setAlternateRoom(alternateRoom);
-
-    booking.setAdminMessage(message);
-
-    booking.setSmartEngineStage("Admin Override");
-
-    bookingRepository.save(booking);
-}
-
-public void overrideReject(RoomBooking booking,
-                           String reason) {
-
-    booking.setStatus("REJECTED");
-
-    booking.setAdminMessage(reason);
-
-    booking.setSmartEngineStage("Admin Override");
-
-    bookingRepository.save(booking);
-}
-
-public void completeBooking(RoomBooking booking) {
-
-    booking.setStatus("COMPLETED");
-
-    booking.setSmartEngineStage("Completed");
-
-    booking.setAdminMessage("Class completed successfully.");
-
-    bookingRepository.save(booking);
-}
-
-public List<RoomBooking> getApprovedBookings() {
-
-    return bookingRepository.findByStatus("APPROVED");
-}
-public void markCompleted(Long id) {
-
-    Optional<RoomBooking> booking = bookingRepository.findById(id);
-
-    if (booking.isPresent()) {
-
-        RoomBooking b = booking.get();
-
-        b.setStatus("COMPLETED");
-
-        b.setSmartEngineStage("Completed");
-
-        bookingRepository.save(b);
-    }
-}
-
+    List<RoomBooking> findByStatus(String status);
 }
