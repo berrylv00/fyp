@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import type { Room } from '@/types';
 
 const statusConfig = {
-  available: { label: 'Available', bg: '#dcfce7', color: '#16a34a', icon: CheckCircle },
-  occupied: { label: 'Occupied', bg: '#fee2e2', color: '#dc2626', icon: XCircle },
-  'regular-class': { label: 'Regular Class', bg: '#dbeafe', color: '#1d4ed8', icon: BookOpen },
-  reserved: { label: 'Reserved', bg: '#fef3c7', color: '#d97706', icon: Lock },
+  AVAILABLE: { label: 'Available', bg: '#dcfce7', color: '#16a34a', icon: CheckCircle },
+  OCCUPIED: { label: 'Occupied', bg: '#fee2e2', color: '#dc2626', icon: XCircle },
+
+  RESERVED: { label: 'Reserved', bg: '#fef3c7', color: '#d97706', icon: Lock },
 };
 
 const RoomCard = ({ room }: { room: Room }) => {
@@ -64,7 +64,7 @@ const AddRoomModal = ({ onClose, onAdd }: { onClose: () => void; onAdd: (r: Room
     department: "Computer Science",
     roomType: "Lecture Room",
     timeSlot: "08:40 AM - 10:10 AM",
-    status: "available" as Room["status"],
+    status: "AVAILABLE" as Room["status"],
     label: "",
     capacity: ""
 });
@@ -95,13 +95,13 @@ const AddRoomModal = ({ onClose, onAdd }: { onClose: () => void; onAdd: (r: Room
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1.5">Floor</label>
-              <select value={form.floorNo} onChange={e => setForm(p => ({ ...p, floor: e.target.value }))} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ border: '1px solid #e5eaf2', background: '#f8fafc' }}>
+              <select value={form.floorNo} onChange={e => setForm(p => ({ ...p, floorNo: e.target.value }))} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ border: '1px solid #e5eaf2', background: '#f8fafc' }}>
                 {['1st Floor', '2nd Floor', '3rd Floor', '4th Floor'].map(f => <option key={f}>{f}</option>)}
               </select>
             </div>
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1.5">Block</label>
-              <select value={form.blockName} onChange={e => setForm(p => ({ ...p, block: e.target.value }))} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ border: '1px solid #e5eaf2', background: '#f8fafc' }}>
+              <select value={form.blockName} onChange={e => setForm(p => ({ ...p, blockName: e.target.value }))} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ border: '1px solid #e5eaf2', background: '#f8fafc' }}>
                 {['Block A', 'Block B', 'Block C'].map(b => <option key={b}>{b}</option>)}
               </select>
             </div>
