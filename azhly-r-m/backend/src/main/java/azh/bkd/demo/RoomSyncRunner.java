@@ -34,23 +34,28 @@ public class RoomSyncRunner implements CommandLineRunner {
         });
 
         // Step 2
-        bookingService.getApprovedBookings().forEach(booking -> {
+  bookingService.getApprovedBookings().forEach(booking -> {
 
-            Room room =
-                    roomService.getRoomByRoomNo(
-                            booking.getApprovedRoom());
+    String roomNo = booking.getApprovedRoom();
 
-            if (room != null) {
+    if (roomNo == null || roomNo.isBlank()) {
+        roomNo = booking.getRoomNo();
+    }
 
-                room.setStatus("OCCUPIED");
-                room.setAvailable(false);
+    Room room = roomService.getRoomByRoomNo(roomNo);
 
-                roomService.saveRoom(room);
+    if (room != null) {
 
-                System.out.println(
-                        room.getRoomNo() + " -> OCCUPIED");
-            }
-        });
+        room.setStatus("OCCUPIED");
+        room.setAvailable(false);
+
+        roomService.saveRoom(room);
+
+        System.out.println(room.getRoomNo() + " -> OCCUPIED");
+    } else {
+        System.out.println("Room not found: " + roomNo);
+    }
+});
 
         System.out.println("========== ROOM SYNC END ==========");
     }
