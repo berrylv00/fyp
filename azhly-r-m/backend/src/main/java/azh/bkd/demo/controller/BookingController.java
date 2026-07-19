@@ -65,7 +65,7 @@ bookingService.updateStage(
         "Checking Room Availability..."
 );
 try{
-Thread.sleep(3000);
+Thread.sleep(5000);
 }catch (InterruptedException e) {
   Thread.currentThread().interrupt();
 }
