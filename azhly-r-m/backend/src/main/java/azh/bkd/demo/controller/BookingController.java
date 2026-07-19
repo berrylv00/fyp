@@ -49,7 +49,11 @@ public ResponseEntity<RoomBooking> requestBooking(
 bookingService.saveBooking(booking);
 
 // Reading
+try{
 Thread.sleep(1000);
+}catch (InterruptedException e) {
+  Thread.currentRhread().interrupt();
+}
 
 // Processing
 savedBooking.setStatus("PROCESSING");
@@ -60,9 +64,11 @@ bookingService.updateStage(
         savedBooking,
         "Checking Room Availability..."
 );
-
+try{
 Thread.sleep(3000);
-
+}catch (InterruptedException e) {
+  Thread.currentRhread().interrupt();
+}
 // Check conflict
 List<RoomBooking> conflicts =
         bookingService.checkConflicts(
@@ -77,7 +83,11 @@ if (!conflicts.isEmpty()) {
             "Finalizing Allocation..."
     );
 
-    Thread.sleep(1000);
+    try{
+Thread.sleep(1000);
+}catch (InterruptedException e) {
+  Thread.currentRhread().interrupt();
+}
 
     bookingService.reject(
             savedBooking,
@@ -94,7 +104,12 @@ bookingService.updateStage(
         "Finalizing Allocation..."
 );
 
+try{
 Thread.sleep(1000);
+}catch (InterruptedException e) {
+  Thread.currentRhread().interrupt();
+}
+
 
 bookingService.approve(
         savedBooking,
