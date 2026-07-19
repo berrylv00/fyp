@@ -46,65 +46,60 @@ public ResponseEntity<RoomBooking> requestBooking(
 }
 
     // Stage 2
-    savedBooking.setStatus("PROCESSING");
+bookingService.saveBooking(booking);
+
+// Reading
+Thread.sleep(1000);
+
+// Processing
+savedBooking.setStatus("PROCESSING");
 bookingService.saveBooking(savedBooking);
 
-    
-try {
-    Thread.sleep(1000);
-} catch (InterruptedException e) {
-    Thread.currentThread().interrupt();
-}
-
+// Checking
 bookingService.updateStage(
-    savedBooking,
-    "Checking Room Availability...");
+        savedBooking,
+        "Checking Room Availability..."
+);
 
 Thread.sleep(3000);
 
+// Check conflict
+List<RoomBooking> conflicts =
+        bookingService.checkConflicts(
+                savedBooking.getRoomNo(),
+                savedBooking.getDay(),
+                savedBooking.getTimeSlot());
+
+if (!conflicts.isEmpty()) {
+
+    bookingService.updateStage(
+            savedBooking,
+            "Finalizing Allocation..."
+    );
+
+    Thread.sleep(1000);
+
+    bookingService.reject(
+            savedBooking,
+            "Room is already booked."
+    );
+
+    return ResponseEntity.ok(savedBooking);
+}
+
+// No Conflict
 
 bookingService.updateStage(
-    savedBooking,
-    "Finalizing Allocation...");
-
- Thread.sleep(1000);
- bookingService.updateStage(
         savedBooking,
-        "Finalizing Allocation...");
+        "Finalizing Allocation..."
+);
 
-try {
-    Thread.sleep(1000);
-} catch (InterruptedException e) {
-    Thread.currentThread().interrupt();
-}
+Thread.sleep(1000);
 
 bookingService.approve(
         savedBooking,
-        "Automatically approved by Smart Engine.");
-        
-        
-        bookingService.updateStage(
-        savedBooking,
-        "Finalizing Allocation...");
-
-try {
-    Thread.sleep(1000);
-} catch (InterruptedException e) {
-    Thread.currentThread().interrupt();
-}
-
-bookingService.reject(
-        savedBooking,
-        "Room is already booked.");
-
-    List<RoomBooking> conflicts =
-            bookingService.checkConflicts(
-
-                    savedBooking.getRoomNo(),
-
-                    savedBooking.getDay(),
-
-                    savedBooking.getTimeSlot());
+        "Automatically approved by Smart Engine."
+);
 
     // ===============================
     // Conflict Found
