@@ -44,6 +44,11 @@ const statusBadge = (status: string) => {
       label: "Rejected",
     },
 
+    COMPLETED: {
+  bg: "#F3F4F6",
+  color: "#6B7280",
+  label: "Completed",
+},
   };
 
   const s = map[status] || map.PENDING;
@@ -532,57 +537,43 @@ const approved = r.status==="APPROVED";
 const completed = r.status==="COMPLETED";
 const rejected = r.status==="REJECTED";
 
+
 return (
+  <div
+    key={r.id}
+    className="rounded-3xl p-6 transition-all duration-500"
+    style={{
+      background: pending
+        ? "#FFFBEB"
+        : processing
+        ? "#EFF6FF"
+        : approved
+        ? "#ECFDF5"
+        : completed
+        ? "#F3F4F6"
+        : "#FEF2F2",
 
-<div
+      border: pending
+        ? "2px solid #FACC15"
+        : processing
+        ? "2px solid #60A5FA"
+        : approved
+        ? "2px solid #22C55E"
+        : completed
+        ? "2px solid #9CA3AF"
+        : "2px solid #EF4444",
 
-key={r.id}
-
-className="rounded-3xl p-6 transition-all duration-500"
-
-style={{
-
-background:
-
-pending
-? "#FFFBEB"
-: processing
-? "#EFF6FF"
-: approved
-? "#ECFDF5"
-: completed
-? "#F3F4F6"
-: "#FEF2F2",
-
-border:
-
-pending
-? "2px solid #FACC15"
-: processing
-? "2px solid #60A5FA"
-: approved
-? "2px solid #22C55E"
-: completed
-? "2px solid #9CA3AF"
-: "2px solid #EF4444",
-
-boxShadow:
-
-pending
-? "0 12px 30px rgba(250,204,21,.25)"
-: processing
-? "0 12px 30px rgba(96,165,250,.25)"
-: approved
-? "0 12px 30px rgba(34,197,94,.25)"
-: completed
-? "0 12px 30px rgba(156,163,175,.25)"
-: "0 12px 30px rgba(239,68,68,.25)",
-
-}
-
-
-
->
+      boxShadow: pending
+        ? "0 12px 30px rgba(250,204,21,.25)"
+        : processing
+        ? "0 12px 30px rgba(96,165,250,.25)"
+        : approved
+        ? "0 12px 30px rgba(34,197,94,.25)"
+        : completed
+        ? "0 12px 30px rgba(156,163,175,.25)"
+        : "0 12px 30px rgba(239,68,68,.25)"
+    }}
+  >
 
 <div className="flex justify-between items-start">
 
@@ -643,103 +634,96 @@ background:"#E2E8F0"
 >
 
 <div
-
-className="h-full rounded-full transition-all duration-700"
-
-style={{
-
-background:
-
-pending
-? "#FFFBEB"
-
-: processing
-? "#EFF6FF"
-
-: approved
-? "#ECFDF5"
-
-: "#FEF2F2",
-
-border:
-
-pending
-? "2px solid #FACC15"
-
-: processing
-? "2px solid #60A5FA"
-
-: approved
-? "2px solid #22C55E"
-
-: "2px solid #EF4444",
-
-boxShadow:
-
-pending
-? "0 12px 30px rgba(250,204,21,.25)"
-
-: processing
-? "0 12px 30px rgba(96,165,250,.25)"
-
-: approved
-? "0 12px 30px rgba(34,197,94,.25)"
-
-: "0 12px 30px rgba(239,68,68,.25)"
-
-
-
-}}
-
->
-
-</div>
-
-</div>
-
-</div>
-
-)}
-
-</div>
-
-
-{processing && (
-<button disabled>Processing...</button>
-)}
-
-{approved && (
-
-<button
-  onClick={async () => {
-
-    await availableAgain(r.id);
-
-    toast.success("Room Available Again");
-
-    loadBookings();
-
-  }}
-
-  className="mt-5 w-full rounded-xl py-3 font-semibold"
-
+  className="h-full rounded-full transition-all duration-700"
   style={{
-    background:"#6B7280",
-    color:"#fff"
+    width: pending
+      ? "35%"
+      : processing
+      ? "75%"
+      : "100%",
+
+    background: pending
+      ? "#FACC15"
+      : processing
+      ? "#60A5FA"
+      : approved
+      ? "#22C55E"
+      : completed
+      ? "#9CA3AF"
+      : "#EF4444",
   }}
-
 >
+</div>
 
-Available Again
+</div>
 
-</button>
+</div>
 
 )}
 
-{rejected && (
-<button disabled>Rejected</button>
-)}
+</div>
 
+<div className="mt-6">
+
+  {processing && (
+    <button
+      disabled
+      className="w-full rounded-xl py-3 font-semibold"
+      style={{
+        background: "#60A5FA",
+        color: "#fff",
+      }}
+    >
+      Processing...
+    </button>
+  )}
+
+  {approved && (
+    <button
+      disabled
+      className="w-full rounded-xl py-3 font-semibold"
+      style={{
+        background: "#22C55E",
+        color: "#fff",
+      }}
+    >
+      Approved
+    </button>
+  )}
+
+  {completed && (
+    <button
+      onClick={async () => {
+        await availableAgain(r.id);
+
+        toast.success("Room is Available Again");
+
+        loadBookings();
+      }}
+      className="w-full rounded-xl py-3 font-semibold"
+      style={{
+        background: "#6B7280",
+        color: "#fff",
+      }}
+    >
+      Available Again
+    </button>
+  )}
+
+  {rejected && (
+    <button
+      disabled
+      className="w-full rounded-xl py-3 font-semibold"
+      style={{
+        background: "#EF4444",
+        color: "#fff",
+      }}
+    >
+      Rejected
+    </button>
+  )}
+
+</div>
 </div>
 
 
@@ -753,7 +737,8 @@ Available Again
 </div>
 
 </div>
-  )
+  );
+  
 };
 
 
